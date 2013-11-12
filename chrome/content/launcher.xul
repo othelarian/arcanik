@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css" ?>
+<?xml-stylesheet href="chrome://arcanik/skin/base.css" type="text/css" ?>
+
+<!DOCTYPE overlay SYSTEM "chrome://arcanik/locale/" >
+
+<?xul-overlay href="chrome://arcanik/content/svg_defs.xul" ?>
+
+<window id="arcanik-launcher" title="Arcanik - launcher" onload="initLauncher();" hidechrome="true"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml">
+
+    <html:head id="arcanik-header"><svg:svg id="arcanik-svghead-defs" /></html:head>
+
+    <script type="application/x-javascript" src="scripts/base.js" />
+    <script type="application/x-javascript">
+        function initLauncher () {
+            window.moveTo(screen.width/2-126,screen.height/2-150); var ring = doc.byID("arcanik-launcher-runering");
+            addnode(2,"circle",{"r":80,"class":"arcanik-runecircle"},ring); addnode(2,"circle",{"r":140,"class":"arcanik-runecircle"},ring);
+            creaRune("nnnyyyn",0,105,ring); creaRune("nyyynny",30,105,ring); creaRune("ynnyyyn",60,105,ring);
+            creaRune("yyyyyyy",90,105,ring); creaRune("ynnynnn",120,105,ring); creaRune("nyynyyy",150,105,ring);
+            creaRune("nynnynn",180,105,ring); creaRune("ynynyyy",-30,105,ring); creaRune("nnyynnn",-60,105,ring);
+            creaRune("ynnyyyn",-90,105,ring); creaRune("ynnynny",-120,105,ring); creaRune("nnyyyyn",-150,105,ring);
+            window.setTimeout(openMainMenu,2000);
+        }
+        function openMainMenu () { window.open("chrome://arcanik/content/mainmenu.xul","arcanik-mainmenu","chrome"); }
+    </script>
+
+    <vbox>
+        <svg:svg width="250" height="250">
+            <svg:g id="arcanik-launcher-runering" transform="translate(125,125),scale(0.8)">
+                <svg:animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="360" dur="4s" additive="sum" repeatCount="indefinite" />
+            </svg:g>
+        </svg:svg>
+        <hbox><spacer flex="1" /><label value="Arcanik" id="arcanik-launcher-label" /><spacer flex="1" /></hbox>
+    </vbox>
+
+</window>

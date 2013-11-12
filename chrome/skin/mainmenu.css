@@ -1,0 +1,14 @@
+h1 {font-family:"first-order",serif;font-size:4em;}
+h2 {font-family:"first-order",serif;font-size:2em;text-decoration:underline;}
+
+.arcanik-mainmenu-btns {
+    -moz-appearance:none !important;border:none !important;font-size:1.5em;background:none !important;padding:0;margin:2px;}
+.arcanik-mainmenu-btnact:hover {color:#08F;}
+.arcanik-mainmenu-btn_gr0 {font-size:1.3em;}
+.arcanik-mainmenu-btn_gr1 {font-size:1.1em;}
+.arcanik-mainmenu-btn_gr2 {font-size:0.8em;}
+.arcanik-mainmenu-btn_gr3 {font-size:0.6em;}
+
+.arcanik-mainmenu-subtitles {font-family:"first-order",serif;font-size:1.2em;text-align:center;}
+.arcanik-mainmenu-labcenter {text-align:center;}
+

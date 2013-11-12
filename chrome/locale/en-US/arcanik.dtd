@@ -1,0 +1,43 @@
+<!ENTITY arcanik.mainmenu.title "Main menu">
+<!ENTITY arcanik.mainmenu.titre "Arcanik">
+<!ENTITY arcanik.mainmenu.titres.campaign "Campaign :">
+<!ENTITY arcanik.mainmenu.titres.mission "Missions :">
+<!ENTITY arcanik.mainmenu.titres.credits "Credits :">
+<!ENTITY arcanik.mainmenu.titres.options "Options :">
+<!ENTITY arcanik.mainmenu.campaign "Campaign">
+<!ENTITY arcanik.mainmenu.mission "Missions">
+<!ENTITY arcanik.mainmenu.credits "Credits">
+<!ENTITY arcanik.mainmenu.options "Options">
+<!ENTITY arcanik.mainmenu.quit "Quit">
+
+
+<!ENTITY arcanik.mainmenu.credits.graph_lab "Graphism :">
+<!ENTITY arcanik.mainmenu.credits.devs_lab "Programming :">
+<!ENTITY arcanik.mainmenu.credits.trad_lab "Translation :">
+<!ENTITY arcanik.mainmenu.credits.music_lab "Musics and sounds :">
+<!ENTITY arcanik.mainmenu.credits.graph_name0 "othelarian">
+<!ENTITY arcanik.mainmenu.credits.devs_name0 "othelarian">
+<!ENTITY arcanik.mainmenu.credits.trad_name0 "othelarian">
+<!ENTITY arcanik.mainmenu.credits.music_name0 "Martin Cap">
+<!ENTITY arcanik.mainmenu.credits.music_name1 "othelarian">
+<!ENTITY arcanik.mainmenu.options.screenmode "Screen mode :">
+<!ENTITY arcanik.mainmenu.options.fullscreen "fullscreen mode">
+<!ENTITY arcanik.mainmenu.options.windowed "windowed mode">
+<!ENTITY arcanik.mainmenu.options.chx_lang "Language selected :">
+<!ENTITY arcanik.mainmenu.options.musiclab "Music :">
+<!ENTITY arcanik.mainmenu.options.musicmute "Play music">
+<!ENTITY arcanik.mainmenu.options.musicvol "Volume :">
+<!ENTITY arcanik.mainmenu.options.soundslab "Sounds :">
+<!ENTITY arcanik.mainmenu.options.soundsmute "Play sounds">
+<!ENTITY arcanik.mainmenu.options.soundsvol "Volume :">
+<!ENTITY arcanik.mainmenu.options.checkmaj "Upgrade">
+<!ENTITY arcanik.mainmenu.options.valid "Valid">
+<!ENTITY arcanik.mainmenu.options.reset "Cancel">
+
+<!ENTITY arcanik.mainmenu.maj.titre "Update :">
+<!ENTITY arcanik.mainmenu.maj.nomaj "No update available.">
+<!ENTITY arcanik.mainmenu.maj.retry "Retry">
+<!ENTITY arcanik.mainmenu.maj.cancel "Cancel">
+
+<!ENTITY arcanik.mainmenu.framereturn "Main menu">
+
