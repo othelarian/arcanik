@@ -1,5 +1,6 @@
 /*BASED COMPONENTS*/
 Components.utils.import("resource://gre/modules/Services.jsm");
+Components.utils.import("resource://gre/modules/Sqlite.jsm");
 /*REWRITE DOCUMENT*/
 var doc=document;
 Document.prototype.byID=function (ch) { return this.getElementById(ch); }
@@ -66,8 +67,8 @@ function creaRune (ch,rot,dist,prt,id=null) {
     if (ch[6] == "y") addnode(2,"use",{"xlink:href":"#rune-right-up"},rune);
 }
 /*BASE INIT*/
-var prefs = Services.prefs; var arc_strs; var voile = null;
-var Cc = Components.classes; var Ci = Components.interfaces; var Cr = Components.results;
+var db = null, prefs = Services.prefs, arc_strs = null, voile = null;
+var Cc = Components.classes, Ci = Components.interfaces, Cr = Components.results;
 function initBase () {
     voile = new voileClass();
     //
@@ -84,6 +85,6 @@ function voileClass () {
 /*QUIT FUNCTION*/
 function quit () {
     var audio_lst = doc.byTAG("html:audio"); for (var it=0; it < audio_lst.length; it++) audio_lst[it].pause();
-    Services.startup.quit(Services.startup.eAttemptQuit);
+    db.close().then(function onClose () { window.setTimeout("Services.startup.quit(Services.startup.eAttemptQuit);",500); });
 }
 

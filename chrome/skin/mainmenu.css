@@ -1,5 +1,6 @@
 h1 {font-family:"first-order",serif;font-size:4em;}
 h2 {font-family:"first-order",serif;font-size:2em;text-decoration:underline;}
+h3 {font-size:1.9em;text-decoration:none;}
 
 .arcanik-mainmenu-btns {
     -moz-appearance:none !important;border:none !important;font-size:1.5em;background:none !important;padding:0;margin:2px;}
@@ -11,4 +12,6 @@ h2 {font-family:"first-order",serif;font-size:2em;text-decoration:underline;}
 
 .arcanik-mainmenu-subtitles {font-family:"first-order",serif;font-size:1.2em;text-align:center;}
 .arcanik-mainmenu-labcenter {text-align:center;}
+
+.arcanik-mainmenu-campaign-mainlab {font-size:1.5em;}
 

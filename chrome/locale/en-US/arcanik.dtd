@@ -10,6 +10,10 @@
 <!ENTITY arcanik.mainmenu.options "Options">
 <!ENTITY arcanik.mainmenu.quit "Quit">
 
+<!ENTITY arcanik.mainmenu.campaign.neworimportlab "Create a unit / import a unit">
+<!ENTITY arcanik.mainmenu.campaign.new "Create">
+<!ENTITY arcanik.mainmenu.campaign.import "Import">
+
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphism :">
 <!ENTITY arcanik.mainmenu.credits.devs_lab "Programming :">
@@ -34,10 +38,12 @@
 <!ENTITY arcanik.mainmenu.options.valid "Valid">
 <!ENTITY arcanik.mainmenu.options.reset "Cancel">
 
-<!ENTITY arcanik.mainmenu.maj.titre "Update :">
+<!ENTITY arcanik.mainmenu.maj.titre "Upgrade :">
 <!ENTITY arcanik.mainmenu.maj.nomaj "No update available.">
 <!ENTITY arcanik.mainmenu.maj.retry "Retry">
 <!ENTITY arcanik.mainmenu.maj.cancel "Cancel">
+<!ENTITY arcanik.mainmenu.maj.newmaj "A new version is available :">
+<!ENTITY arcanik.mainmenu.maj.domaj "Do upgrade">
 
 <!ENTITY arcanik.mainmenu.framereturn "Main menu">
 

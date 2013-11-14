@@ -10,6 +10,10 @@
 <!ENTITY arcanik.mainmenu.options "Options">
 <!ENTITY arcanik.mainmenu.quit "Quitter">
 
+<!ENTITY arcanik.mainmenu.campaign.neworimportlab "Créer une unité / importer une unité">
+<!ENTITY arcanik.mainmenu.campaign.new "Créer">
+<!ENTITY arcanik.mainmenu.campaign.import "Importer">
+
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphisme :">
 <!ENTITY arcanik.mainmenu.credits.devs_lab "Programmation :">
@@ -38,6 +42,8 @@
 <!ENTITY arcanik.mainmenu.maj.nomaj "Aucune mise à jour disponible.">
 <!ENTITY arcanik.mainmenu.maj.retry "Réessayer">
 <!ENTITY arcanik.mainmenu.maj.cancel "Annuler">
+<!ENTITY arcanik.mainmenu.maj.newmaj "Une nouvelle version est disponible :">
+<!ENTITY arcanik.mainmenu.maj.domaj "Mettre à jour">
 
 <!ENTITY arcanik.mainmenu.framereturn "Menu principal">
 

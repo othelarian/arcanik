@@ -96,11 +96,37 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                             </svg:g></svg:svg>
                         </vbox>
                     </box>
-                    <box>
+                    <vbox>
                         <html:h2>&arcanik.mainmenu.titres.campaign;</html:h2>
-                        <!-- -->
-                        <!-- -->
-                    </box>
+                        <hbox><vbox align="end" flex="2">
+                            <deck id="arcanik-campaign-maindeck">
+                                <vbox><label value="&arcanik.mainmenu.campaign.neworimportlab;" class="arcanik-mainmenu-campaign-mainlab" /></vbox>
+                            </deck>
+                            <hbox id="arcanik-campaign-creaform">
+                                <!-- -->
+                                <button label="&arcanik.mainmenu.campaign.new;" />
+                                <!-- -->
+                                <button label="&arcanik.mainmenu.campaign.import;" />
+                                <!-- -->
+                            </hbox>
+                            <hbox id="arcanik-campaign-saveform" style="display:none;">
+                                <!-- -->
+                                <button label="test - play" />
+                                <!-- -->
+                                <button label="test - export" />
+                                <!-- -->
+                            </hbox>
+                            <!-- -->
+                            <label value="test - unit" />
+                            <!-- -->
+                            <label value="test - unit" />
+                            <!-- -->
+                            <label value="test - unit" />
+                            <!-- -->
+                            <!-- -->
+                        </vbox><spacer flex="1" /></hbox>
+                        <hbox><button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" /></hbox>
+                    </vbox>
                     <box>
                         <html:h2>&arcanik.mainmenu.titres.mission;</html:h2>
                         <!-- -->
@@ -198,8 +224,8 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     </svg:g>
                 </svg:svg>
             <spacer flex="1" /></hbox><spacer flex="1" /></vbox>
-            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox><!-- MAJ SYSTEM -->
-                <html:h2>&arcanik.mainmenu.maj.titre;</html:h2>
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- MAJ SYSTEM -->
+                <html:h3>&arcanik.mainmenu.maj.titre;</html:h3>
                 <deck id="arcanik-maj-deck">
                     <vbox><!-- NO MAJ -->
                         <label value="&arcanik.mainmenu.maj.nomaj;" class="arcanik-voile-lab" />
@@ -209,12 +235,25 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                         <spacer flex="1" /></hbox>
                     </vbox>
                     <vbox><!-- MAJ AVAILABLE -->
+                        <label value="&arcanik.mainmenu.maj.newmaj;" class="arcanik-voile-lab" />
+                        <label value="" id="arcanik-maj-version-nb" class="arcanik-voile-lab" />
+                        <hbox><spacer flex="1" />
+                            <button label="&arcanik.mainmenu.maj.domaj;" oncommand="majSystem.doMaj();" /><spacer flex="1" />
+                            <button label="&arcanik.mainmenu.maj.cancel;" oncommand="majSystem.cancel();" />
+                        <spacer flex="1" /></hbox>
+                    </vbox>
+                    <!-- -->
+                    <vbox><!-- MAJ FAILED -->
                         <!-- -->
-                        <label value="pass 2 maj system" />
                         <!-- -->
                         <!-- -->
                     </vbox>
                     <!-- -->
+                    <vbox><!-- MAJ SUCCESSED -->
+                        <!-- -->
+                        <!-- -->
+                        <!-- -->
+                    </vbox>
                     <!-- -->
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>

@@ -1,1 +1,1 @@
-../xulrunner/xulrunner application.ini -purgecaches
+../xulrunner/xulrunner application.ini -console -purgecaches

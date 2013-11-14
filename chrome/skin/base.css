@@ -10,14 +10,15 @@ button {
     -moz-appearance:none !important;font-family:"first-order",serif;border:solid 1px black;
     background-color:white !important;margin:10px;padding:5px;font-size:1.2em;
 }
-button:hover {color:#08f;text-decoration:underline;}
+button:hover {text-decoration:underline;}
 groupbox {border:solid 2px #bbbbbb;border-radius:10px;}
 groupbox caption {background-color:white;font-size:1.1em;}
 
 polygon {fill:#83FFFF;stroke:#83FFFF;stroke-width:2;}
 
 .arcanik-runecircle {fill:none;stroke:#83FFFF;stroke-width:10;}
-.arcanik-voile-lab {background-color:white;font-size:1.4em;}
+.arcanik-voile-lab {font-size:1.4em;}
+.arcanik-voile-center {background-color:white;}
 
 #arcanik-voile {background-color:white;opacity:0.7;}
 #arcanik-launcher-label {font-family:"first-order",serif;font-size:2em;margin:10px;}

@@ -1,5 +1,5 @@
 /*INIT VARIABLES*/
-var sounds = [0,0,0], optionsSystem = null, majSystem = null;
+var sounds = [0,0,0], optionsSystem = null, majSystem = null, nbsaves = 0;
 var frames_state = 0, freeze = false, mainmenu_state = 0;
 /*INIT MAIN MENU FUNCTION*/
 function initMain () {
@@ -8,6 +8,46 @@ function initMain () {
     //
     initBase();
     //
+    //chargement des sauvegardes
+    Sqlite.openConnection({path: "saves.sqlite"}).then(
+        function onConnection (dbcon) {
+            db = dbcon;
+            db.tableExists("saves").then(
+                function onExist (result) {
+                    if (result) {
+                        var req = "SELECT rowid,name,crea_date,time FROM saves;";
+                        db.execute(req).then(function onStatementComplete(result) {
+                            //
+                            nbsaves = result.length;
+                            //
+                            for (idx in result) {
+                                //
+                                var node = addnode(0,"vbox","",doc.byID("arcanik-campaign-maindeck"));
+                                addnode(0,"label",{"value":result[idx].getResultByIndex(1),"class":"arcanik-mainmenu-campaign-mainlab"},node);
+                                //
+                                // TODO : écriture des sauvegardes récupérées dans le document XUL
+                                //
+                                //window.dump("\n\n"+result[0].getResultByIndex(1)+"\n\n");
+                                //
+                                //
+                                //
+                            }
+                            //
+                            window.dump("\n\n"+doc.byID("arcanik-campaign-maindeck").byTAG("vbox").length+"\n\n");
+                            //
+                            window.dump("\n\n"+nbsaves+"\n\n");
+                            //
+                        });
+                    }
+                    else {
+                        var req = "CREATE TABLE saves ('name' TEXT,'crea_date' DEFAULT CURRENT_TIMESTAMP,'time' INT DEFAULT 0,'data' TEXT DEFAULT '');";
+                        db.execute(req).then(function onStatementComplete (result) {});
+                    }
+                }
+            );
+        },
+        function onError (error) { quit(); }
+    );
     //ajout des runes
     var ring = doc.byID("arcanik-mainmenu-movering");
     var rune_lst = ["nnnyyyn","nyyynny","ynnyyyn","yyyyyyy","ynnynnn","nyynyyy","nynnynn","nnyyyyn","ynnynny","ynnyyyn","nnyynnn","ynynyyy"];
@@ -93,11 +133,29 @@ function keycapt (evt) {
                         //
                         break;
                     //
+                    case 38:
+                        //
+                        if (doc.byID("arcanik-campaign-maindeck").selectedIndex > 0)
+                            doc.byID("arcanik-campaign-maindeck").selectedIndex--;
+                        //
+                        else alert("to high");
+                        //
+                        break;
+                    //
+                    case 40:
+                        //
+                        if (doc.byID("arcanik-campaign-maindeck").selectedIndex < nbsaves)
+                            doc.byID("arcanik-campaign-maindeck").selectedIndex++;
+                        //
+                        else alert("to low");
+                        //
+                        break;
                     //
                 }
                 break;
             case 2: //mission menu
                 switch (evt.keyCode) {
+                    case 8: case 27: showFrame(0); break; //touches BACK et ESC
                     //
                     //
                     //
@@ -233,11 +291,18 @@ function optionsClass () {
 }
 /*MAJ CLASS*/
 function majClass () {
-    this.checker = null; this.listener = null; this.maj_obs = null;
+    this.checker = null; this.listener = null; this.maj_obs = null; this.aus = null;
     this.checkUpdate = function () { voile.show(0); voile.toggle(); window.setTimeout(majSystem.checking,500); }
     this.checking = function () { majSystem.checker.checkForUpdates(majSystem.listener,true); }
     this.retryCheck = function () { doc.byID("arcanik-maj-deck").selectedIndex = 0; voile.show(0); window.setTimeout(majSystem.checking,500); }
-    //
+    this.doMaj = function () {
+        //
+        voile.show(0);
+        //
+        //alert("do maj method");
+        //
+        //
+    }
     //
     this.cancel = function () { doc.byID("arcanik-maj-deck").selectedIndex = 0; voile.show(0); voile.toggle(); }
     this.init = function () {
@@ -245,7 +310,21 @@ function majClass () {
         this.listener = {
             update: null,
             onError: function (request,update) { voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 0; },
-            onCheckComplete: function (request,updates,updateCount) { voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 1; },
+            onCheckComplete: function (request,updates,updateCount) {
+                voile.show(1); var found = false; var chx = 0;
+                for (var it=0; it<updateCount; it++) {
+                    if (Services.appinfo.version < updates[it].appVersion) {
+                        if (updates[it].type == "major") { found = true; chx = it; break; }
+                        if (found) { if (updates[chx].appVersion > updates[it].appVersion) chx = it; }
+                        else { found = true; chx = it; }
+                    }
+                }
+                if (found) {
+                    doc.byID("arcanik-maj-deck").selectedIndex = 1; this.update = updates[chx];
+                    modnode(doc.byID("arcanik-maj-version-nb"),{"value":Services.appinfo.version+" >>> "+this.update.appVersion});
+                }
+                else doc.byID("arcanik-maj-deck").selectedIndex = 0;
+            },
             onProgress: function (request,position,totalSize) {}
         };
         this.maj_obs = {
@@ -257,6 +336,7 @@ function majClass () {
                     case Cr.NS_ERROR_UNEXPECTED:
                         if (u.state == "download-failed" && u.isCompleteUpdate) {
                             //
+                            //try { //
                             //
                             //
                         }
@@ -275,6 +355,7 @@ function majClass () {
                 }
             }
         };
+        this.aus = Cc["@mozilla.org/updates/update-service;1"].getService(Ci.nsIApplicationUpdateService);
     }
     this.init();
 }
