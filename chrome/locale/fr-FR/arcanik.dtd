@@ -13,6 +13,22 @@
 <!ENTITY arcanik.mainmenu.campaign.neworimportlab "Créer une unité / importer une unité">
 <!ENTITY arcanik.mainmenu.campaign.new "Créer">
 <!ENTITY arcanik.mainmenu.campaign.import "Importer">
+<!ENTITY arcanik.mainmenu.campaign.play "Jouer">
+<!ENTITY arcanik.mainmenu.campaign.export "Exporter">
+<!ENTITY arcanik.mainmenu.campaign.remove "Supprimer">
+
+<!ENTITY arcanik.mainmenu.campaign.import.titre "Import :">
+
+<!ENTITY arcanik.mainmenu.campaign.import.failedlab "Impossible d'importer la sauvegarde.">
+<!ENTITY arcanik.mainmenu.campaign.import.retry "Réessayer">
+<!ENTITY arcanik.mainmenu.campaign.import.cancel "Annuler">
+<!ENTITY arcanik.mainmenu.campaign.import.doublonlab "Il existe déjà une unité avec le même nom.">
+<!ENTITY arcanik.mainmenu.campaign.export.titre "Export :">
+<!ENTITY arcanik.mainmenu.campaign.export.successlab "L'unité a bien été exportée.">
+<!ENTITY arcanik.mainmenu.campaign.export.close "OK">
+<!ENTITY arcanik.mainmenu.campaign.export.failedlab "L'export de l'unité a échoué.">
+<!ENTITY arcanik.mainmenu.campaign.export.retry "Réessayer">
+<!ENTITY arcanik.mainmenu.campaign.export.cancel "Annuler">
 
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphisme :">

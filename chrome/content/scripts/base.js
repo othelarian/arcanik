@@ -1,6 +1,7 @@
 /*BASED COMPONENTS*/
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/Sqlite.jsm");
+Components.utils.import("resource://gre/modules/osfile.jsm");
 /*REWRITE DOCUMENT*/
 var doc=document;
 Document.prototype.byID=function (ch) { return this.getElementById(ch); }
@@ -70,7 +71,7 @@ function creaRune (ch,rot,dist,prt,id=null) {
 var db = null, prefs = Services.prefs, arc_strs = null, voile = null;
 var Cc = Components.classes, Ci = Components.interfaces, Cr = Components.results;
 function initBase () {
-    voile = new voileClass();
+    voile = new voileClass(); arc_strs = doc.byID("arcanik-strings");
     //
     //
 }
