@@ -15,10 +15,22 @@
 <!ENTITY arcanik.mainmenu.campaign.import "Import">
 <!ENTITY arcanik.mainmenu.campaign.play "Play">
 <!ENTITY arcanik.mainmenu.campaign.export "Export">
-<!ENTITY arcanik.mainmenu.campaign.remove "Remove">
+<!ENTITY arcanik.mainmenu.campaign.remove "Delete">
+
+<!ENTITY arcanik.mainmenu.campaign.create.titre "New unit :">
+
+<!ENTITY arcanik.mainmenu.campaign.create.namelab "Name of the unit :">
+<!ENTITY arcanik.mainmenu.campaign.create.create "Create">
+<!ENTITY arcanik.mainmenu.campaign.create.cancel "Cancel">
+<!ENTITY arcanik.mainmenu.campaign.create.double "A unit with the same name already exists.">
+<!ENTITY arcanik.mainmenu.campaign.create.retry "Return">
+
 
 <!ENTITY arcanik.mainmenu.campaign.import.titre "Import :">
-
+<!ENTITY arcanik.mainmenu.campaign.import.successlab "The unit was successfully imported.">
+<!ENTITY arcanik.mainmenu.campaign.import.askplay "Do you want to play with the imported unit ?">
+<!ENTITY arcanik.mainmenu.campaign.import.play "Play">
+<!ENTITY arcanik.mainmenu.campaign.import.close "Finish">
 <!ENTITY arcanik.mainmenu.campaign.import.failedlab "Impossible to import the save.">
 <!ENTITY arcanik.mainmenu.campaign.import.retry "Retry">
 <!ENTITY arcanik.mainmenu.campaign.import.cancel "Cancel">
@@ -29,6 +41,12 @@
 <!ENTITY arcanik.mainmenu.campaign.export.failedlab "the export of the unit failed.">
 <!ENTITY arcanik.mainmenu.campaign.export.retry "Retry">
 <!ENTITY arcanik.mainmenu.campaign.export.cancel "Cancel">
+<!ENTITY arcanik.mainmenu.campaign.remove.titre "Delete a unit :">
+<!ENTITY arcanik.mainmenu.campaign.remove.asklab "Are you sure you want to delete this unit ?">
+<!ENTITY arcanik.mainmenu.campaign.remove.valid "Delete">
+<!ENTITY arcanik.mainmenu.campaign.remove.cancel "Cancel">
+<!ENTITY arcanik.mainmenu.campaign.remove.endlab "The unit was deleted.">
+<!ENTITY arcanik.mainmenu.campaign.remove.close "OK">
 
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphism :">

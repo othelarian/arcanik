@@ -4,27 +4,25 @@ var campaign = null;
 var frames_state = 0, freeze = false, mainmenu_state = 0;
 /*INIT MAIN MENU FUNCTION*/
 function initMain () {
-    //
-    // TODO : init de la 3D
-    //
+    //init de bas
     initBase();
+    //
+    doc.byID("arcanik-mainmenu-3dzone").getContext("webgl");
+    //
+    scene3D.init3D("arcanik-mainmenu-3dzone");
     //
     //mise en place du gestionnaire d'options
     optionsSystem = new optionsClass();
     //mise en place du menu "campaign"
     campaign = new campaignClass();
     //ajout des runes
-    var ring = doc.byID("arcanik-mainmenu-movering");
-    var rune_lst = ["nnnyyyn","nyyynny","ynnyyyn","yyyyyyy","ynnynnn","nyynyyy","nynnynn","nnyyyyn","ynnynny","ynnyyyn","nnyynnn","ynynyyy"];
-    for (var it=0; it<rune_lst.length;it++) creaRune(rune_lst[it],it*30,105,ring);
-    var ring = doc.byID("arcanik-voile-waiting");
-    var rune_lst = ["nnnyyyn","nyyynny","ynnyyyn","yyyyyyy","ynnynnn","nyynyyy","nynnynn","nnyyyyn","ynnynny","ynnyyyn","nnyynnn","ynynyyy"];
-    for (var it=0; it<rune_lst.length;it++) creaRune(rune_lst[it],it*30,105,ring);
-    var ring = doc.byID("arcanik-mainmenu-staticring");
-    creaRune("nyynyny",90,180,ring,"arcanik-mainmenu-ico0"); creaRune("nynyyny",140,180,ring,"arcanik-mainmenu-ico1");
-    creaRune("yynynny",160,180,ring,"arcanik-mainmenu-ico2"); creaRune("nyynyyn",180,180,ring,"arcanik-mainmenu-ico3");
-    creaRune("nyynnyy",200,180,ring,"arcanik-mainmenu-ico4");
-    creaRune("ynyynyy",0,0,doc.byID("arcanik-mainmenu-uparrow")); creaRune("ynyynyy",180,0,doc.byID("arcanik-mainmenu-dnarrow"));
+    var ring = doc.byID("arcanik-mainmenu-movering"); var rune_lst = [56,78,57,127,9,118,18,60,73,57,12,117];
+    for (var it=0; it<rune_lst.length;it++) addRune(rune_lst[it],105,it*30,ring);
+    var ring = doc.byID("arcanik-voile-waiting"); for (var it=0; it<rune_lst.length;it++) addRune(rune_lst[it],105,it*30,ring);
+    var ring = doc.byID("arcanik-mainmenu-staticring"); addRune(53,180,90,ring,"arcanik-mainmenu-ico0");
+    addRune(45,180,140,ring,"arcanik-mainmenu-ico1"); addRune(105,180,160,ring,"arcanik-mainmenu-ico2");
+    addRune(54,180,180,ring,"arcanik-mainmenu-ico3"); addRune(51,180,200,ring,"arcanik-mainmenu-ico4");
+    addRune(109,0,0,doc.byID("arcanik-mainmenu-uparrow")); addRune(109,0,180,doc.byID("arcanik-mainmenu-dnarrow"));
     //capture des évènements
     window.addEventListener("keydown",keycapt,false);
     window.addEventListener("DOMMouseScroll",wheelcapt,false);
@@ -56,29 +54,41 @@ function keycapt (evt) {
         switch (frames_state) {
             case 1: //campaign menu
                 switch (parseInt(doc.byID("arcanik-voile-deck").selectedIndex)) {
-                    //
+                    case 2: //creation
+                        switch (evt.keyCode) {
+                            case 8: case 27: voile.toggle(); break; //touches BACK et ESC
+                            case 13: //touche RETURN
+                                if (doc.byID("arcanik-create-deck").selectedIndex == 0) campaign.create(1);
+                                else if (doc.byID("arcanik-create-deck").selectedIndex == 1) { voile.toggle(); campaign.create(0); }
+                                else { voile.toggle(); campaign.play(); }
+                                break;
+                        }
+                        break;
                     case 3: //import
                         switch (evt.keyCode) {
-                            case 8: case 27: voile.toggle(); //touches BACK et ESC
-                            //
+                            case 8: case 27: voile.toggle(); break; //touches BACK et ESC
                             case 13: //touche RETURN
-                                //
-                                //
-                                //
+                                if (doc.byID("arcanik-import-deck").selectedIndex == 0) { voile.toggle(); campaign.play(); }
+                                else { voile.toggle(); campaign.importer(); }
                                 break;
-                            //
-                            //
                         }
                         break;
                     case 4: //export
                         switch (evt.keyCode) {
-                            case 8: case 27: voile.toggle(); //touches BACK et ESC
+                            case 8: case 27: voile.toggle(); break; //touches BACK et ESC
                             case 13: //touche RETURN
                                 voile.toggle(); if (doc.byID("arcanik-export-deck").selectedIndex == 1) campaign.exporter(); break;
                         }
                         break;
-                    //
-                    //
+                    case 5: //suppression
+                        switch (evt.keyCode) {
+                            case 8: case 27: voile.toggle(); break; //touches BACK et ESC
+                            case 13: //touche RETURN
+                                if (doc.byID("arcanik-remove-deck").selectedIndex == 0) campaign.remove(1);
+                                else if (doc.byID("arcanik-remove-deck").selectedIndex == 1) voile.toggle();
+                                break;
+                        }
+                        break;
                 }
                 break;
             case 2: //mission menu
@@ -115,10 +125,10 @@ function keycapt (evt) {
             case 1: //campaign menu
                 switch (evt.keyCode) {
                     case 8: case 27: showFrame(0); break; //touches BACK et ESC
-                    case 13: if (doc.byID("arcanik-campaign-maindeck").selectedIndex == 0) campaign.create(); else campaign.play(); break; //touche RETURN
+                    case 13: if (doc.byID("arcanik-campaign-maindeck").selectedIndex == 0) campaign.create(0); else campaign.play(); break; //touche RETURN
                     case 38: campaign.move(false); break; //touche flèche haut
                     case 40: campaign.move(true); break; //touche flèches bas
-                    case 46: if (doc.byID("arcanik-campaign-maindeck").selectedIndex > 0) campaign.remove(); break; //touche "suppr"
+                    case 46: if (doc.byID("arcanik-campaign-maindeck").selectedIndex > 0) campaign.remove(0); break; //touche "suppr"
                     case 69: if (doc.byID("arcanik-campaign-maindeck").selectedIndex > 0) campaign.exporter(); break; //touche "e"
                     case 73: if (doc.byID("arcanik-campaign-maindeck").selectedIndex == 0) campaign.importer(); break; //touche "i"
                 }
@@ -333,13 +343,14 @@ function majClass () {
 }
 /*CAMPAIGN CLASS*/
 function campaignClass () {
-    this.nbsaves = 0; this.impsave = null;
+    this.nbsaves = 0; this.impsave = null; this.tmpname = "";
     this.move = function (sens) {
         var actdeck = doc.byID("arcanik-campaign-maindeck").selectedIndex;
         if (actdeck > 0 && !sens) {
             playSounds(0); doc.byID("arcanik-campaign-maindeck").selectedIndex--;
-            doc.byID("arcanik-campaign-lab"+(parseInt(actdeck)-1)).style.display = "block";
             var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab";
+            doc.byID("arcanik-campaign-lab"+(parseInt(actdeck)-1)).setAttribute("class",clas+"1");
+            doc.byID("arcanik-campaign-lab"+(parseInt(actdeck)-1)).style.display = "block";
             for (var it=0;it<(this.nbsaves-parseInt(actdeck)) && it<3;it++) {
                 var nod = doc.byID("arcanik-campaign-lab"+(parseInt(actdeck)+it)); if (it == 2) nod.style.display = "none"; else nod.setAttribute("class",clas+(it+2)); }
             if (actdeck == 1) {
@@ -361,12 +372,32 @@ function campaignClass () {
             else if (actdeck == (this.nbsaves-1)) doc.byID("arcanik-campaign-garrowdn").style.display = "none";
         }
     }
-    this.create = function () {
-        //
-        alert("create");
-        //
-        // TODO : création d'une nouvelle unité
-        //
+    this.create = function (lvl) {
+        switch (lvl) {
+            case 0: voile.toggle(); voile.show(2); doc.byID("arcanik-create-deck").selectedIndex = 0; break;
+            case 1:
+                campaign.tmpname = doc.byID("arcanik-create-textbox").value;
+                //
+                db.execute("SELECT COUNT(*) FROM saves WHERE name='"+campaign.tmpname+"';").then(function onStatementComplete (res) {
+                    //
+                    alert(campaign.tmpname);
+                    //
+                    alert(res[0].getResultByIndex(0));
+                    //
+                    if (res[0].getResultByIndex(0) == 1) {
+                        //
+                        //
+                        //
+                    }
+                    //
+                    // TODO : vérification de non doublon du nom de l'unité
+                    //
+                    // TODO : création de la nouvelle unité
+                    //
+                });
+                //
+                break;
+        }
     }
     this.importer = function () {
         voile.toggle(); voile.show(0); var nsIFP = Ci.nsIFilePicker; var fpck = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFP);
@@ -375,15 +406,35 @@ function campaignClass () {
         if (res == nsIFP.returnOK) {
             var impfile = OS.File.read(fpck.file.path).then(
                 function onSuccess (array) {
-                    var decoder = new TextDecoder(); this.impsave = JSON.parse(decoder.decode(array));
-                    db.execute("SELECT COUNT(*) FROM saves WHERE name='"+this.impsave["name"]+"';").then( function onStatementComplete (res) {
+                    var decoder = new TextDecoder(); campaign.impsave = JSON.parse(decoder.decode(array));
+                    db.execute("SELECT COUNT(*) FROM saves WHERE name='"+campaign.impsave["name"]+"';").then( function onStatementComplete (res) {
                         if (res[0].getResultByIndex(0) == 1) { voile.show(3); doc.byID("arcanik-import-deck").selectedIndex = 2; }
                         else {
-                            //
-                            // TODO : enregistrement de la nouvelle unité importée
-                            //
-                            // TODO : mise à jour de la liste
-                            //
+                            var req = "INSERT INTO saves VALUES ('"+campaign.impsave["name"]+"','"+campaign.impsave["crea_date"]+"',";
+                            req += campaign.impsave["time"]+",'"+campaign.impsave["data"]+"');";
+                            db.execute(req).then(function onStatementComplete () {
+                                var node = addnode(0,"vbox",{"id":"arcanik-campaign-info"+campaign.nbsaves},doc.byID("arcanik-campaign-maindeck"));
+                                addnode(0,"label",{"value":campaign.impsave["name"],"class":"arcanik-mainmenu-campaign-mainlab"},node);
+                                node = addnode(0,"hbox",{"class":"arcanik-mainmenu-campaign-infos"},node);
+                                addnode(0,"label",{"value":campaign.impsave["crea_date"]},node); addnode(0,"spacer",{"flex":50},node);
+                                var timed = campaign.impsave["time"];
+                                if (timed > 59) {
+                                    if (timed > 3600) {
+                                        var tmp_time = ((timed - timed%3600)/3600)+":"+((timed%3600 < 600)? "0":"");
+                                        timed = tmp_time+((timed%3600 - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60);
+                                    }
+                                    else timed = ((timed - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60)
+                                } else timed += " secs";
+                                addnode(0,"label",{"value":timed},node);
+                                var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab1";
+                                var dict = {"value":campaign.impsave["name"],"class":clas,"id":"arcanik-campaign-lab"+campaign.nbsaves};
+                                node = addnode(0,"label",dict,doc.byID("arcanik-campaign-labs")); node.style.display = "none";
+                                var actdeck = parseInt(doc.byID("arcanik-campaign-maindeck").selectedIndex);
+                                for (var it=0; it < (campaign.nbsaves-actdeck) && it<3 ;it++) doc.byID("arcanik-campaign-lab"+(actdeck+it)).style.display = "none";
+                                campaign.nbsaves++; doc.byID("arcanik-campaign-maindeck").selectedIndex = campaign.nbsaves;
+                                doc.byID("arcanik-campaign-garrowdn").style.display = "none";
+                                voile.show(3); doc.byID("arcanik-import-deck").selectedIndex = 0;
+                            });
                         }
                     });
                 },
@@ -410,22 +461,31 @@ function campaignClass () {
         }
         else { voile.toggle(); return; }
     }
-    this.play = function (over) {
+    this.play = function () {
         //
         alert("play");
         //
         // TODO : lancement du jeu
         //
     }
-    this.remove = function () {
-        //
-        alert("remove");
-        //
-        // TODO : suppression de la sauvegarde
-        //
+    this.remove = function (lvl) {
+        switch (lvl) {
+            case 0: voile.toggle(); voile.show(5); doc.byID("arcanik-remove-deck").selectedIndex = 0; break;
+            case 1:
+                voile.show(0); var actdeck = parseInt(doc.byID("arcanik-campaign-maindeck").selectedIndex);
+                var name = doc.byID("arcanik-campaign-lab"+(actdeck-1)).value;
+                remnode(doc.byID("arcanik-campaign-info"+(actdeck-1))); remnode(doc.byID("arcanik-campaign-lab"+(actdeck-1)));
+                doc.byID("arcanik-campaign-maindeck").selectedIndex--;
+                for (var it= actdeck; it < this.nbsaves; it++) doc.byID("arcanik-campaign-lab"+it).setAttribute("id","arcanik-campaign-lab"+(it-1));
+                this.nbsaves--;
+                if (actdeck == 1) doc.byID("arcanik-campaign-garrowup").style.display = "none";
+                db.execute("DELETE FROM saves WHERE name='"+name+"';").then(function onStatementComplete (res) {
+                    voile.show(5); doc.byID("arcanik-remove-deck").selectedIndex = 1; });
+                break;
+        }
     }
     this.init = function () {
-        creaRune("ynyynyy",0,0,doc.byID("arcanik-campaign-arrowup")); creaRune("ynyynyy",180,0,doc.byID("arcanik-campaign-arrowdn"));
+        addRune(109,0,0,doc.byID("arcanik-campaign-arrowup")); addRune(109,0,180,doc.byID("arcanik-campaign-arrowdn"));
         Sqlite.openConnection({path: "saves.sqlite"}).then(
             function onConnection (dbcon) {
                 db = dbcon;
@@ -436,7 +496,7 @@ function campaignClass () {
                             db.execute(req).then(function onStatementComplete(result) {
                                 campaign.nbsaves = result.length; doc.byID("arcanik-campaign-garrowdn").style.display = "block";
                                 for (idx in result) {
-                                    var node = addnode(0,"vbox","",doc.byID("arcanik-campaign-maindeck"));
+                                    var node = addnode(0,"vbox",{"id":"arcanik-campaign-info"+idx},doc.byID("arcanik-campaign-maindeck"));
                                     addnode(0,"label",{"value":result[idx].getResultByIndex(0),"class":"arcanik-mainmenu-campaign-mainlab"},node);
                                     node = addnode(0,"hbox",{"class":"arcanik-mainmenu-campaign-infos"},node);
                                     addnode(0,"label",{"value":result[idx].getResultByIndex(1)},node); addnode(0,"spacer",{"flex":50},node);
@@ -452,7 +512,8 @@ function campaignClass () {
                                     var lvl = 3; if (idx == 0 || idx == 1) lvl = parseInt(idx) + 1;
                                     var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab"+lvl;
                                     var dict = {"value":result[idx].getResultByIndex(0),"class":clas,"id":"arcanik-campaign-lab"+idx};
-                                    if (idx > 2) dict["style"] = "display:none;"; addnode(0,"label",dict,doc.byID("arcanik-campaign-labs"));
+                                    if (idx > 2) dict["style"] = "display:none;";
+                                    addnode(0,"label",dict,doc.byID("arcanik-campaign-labs"));
                                 }
                             });
                         }

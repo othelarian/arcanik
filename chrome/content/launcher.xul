@@ -18,13 +18,13 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
         function initLauncher () {
             window.moveTo(screen.width/2-126,screen.height/2-150); var ring = doc.byID("arcanik-launcher-runering");
             addnode(2,"circle",{"r":80,"class":"arcanik-runecircle"},ring); addnode(2,"circle",{"r":140,"class":"arcanik-runecircle"},ring);
-            creaRune("nnnyyyn",0,105,ring); creaRune("nyyynny",30,105,ring); creaRune("ynnyyyn",60,105,ring);
-            creaRune("yyyyyyy",90,105,ring); creaRune("ynnynnn",120,105,ring); creaRune("nyynyyy",150,105,ring);
-            creaRune("nynnynn",180,105,ring); creaRune("ynynyyy",-30,105,ring); creaRune("nnyynnn",-60,105,ring);
-            creaRune("ynnyyyn",-90,105,ring); creaRune("ynnynny",-120,105,ring); creaRune("nnyyyyn",-150,105,ring);
+            addRune(56,105,0,ring); addRune(78,105,30,ring); addRune(57,105,60,ring);
+            addRune(127,105,90,ring); addRune(9,105,120,ring); addRune(118,105,150,ring);
+            addRune(18,105,180,ring); addRune(60,105,-150,ring); addRune(73,105,-120,ring);
+            addRune(57,105,-90,ring); addRune(12,105,-60,ring); addRune(117,105,-30,ring);
             window.setTimeout(openMainMenu,2000);
         }
-        function openMainMenu () { window.open("chrome://arcanik/content/mainmenu.xul","arcanik-mainmenu","chrome"); }
+        function openMainMenu () { window.open("chrome://arcanik/content/mainmenu.xul","arcanik-mainmenu","chrome,centerscreen"); }
     </script>
 
     <vbox>

@@ -35,15 +35,12 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
 
     <stringbundleset><stringbundle id="arcanik-strings" src="chrome://arcanik/locale/arcanik.properties" /></stringbundleset>
 
+    <script type="application/x-javascript" src="scripts/three.min.js" />
     <script type="application/x-javascript" src="scripts/base.js" />
     <script type="application/x-javascript" src="scripts/mainmenu.js" />
 
     <stack>
-        <!-- -->
-        <!-- -->
         <html:canvas id="arcanik-mainmenu-3dzone" width="100%" height="100%" />
-        <!-- -->
-        <!-- -->
         <vbox id="arcanik-mainmenu-frame" hidden="false">
             <hbox><spacer flex="1" /><html:h1>&arcanik.mainmenu.titre;</html:h1><spacer flex="2" /></hbox>
             <hbox>
@@ -117,13 +114,13 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                                 </deck>
                             </hbox>
                             <hbox id="arcanik-campaign-creaform">
-                                <button label="&arcanik.mainmenu.campaign.new;" oncommand="campaign.create();" />
+                                <button label="&arcanik.mainmenu.campaign.new;" oncommand="campaign.create(0);" />
                                 <button label="&arcanik.mainmenu.campaign.import;" oncommand="campaign.importer();" />
                             </hbox>
                             <hbox id="arcanik-campaign-saveform" style="display:none;">
                                 <button label="&arcanik.mainmenu.campaign.play;" oncommand="campaign.play();" />
                                 <button label="&arcanik.mainmenu.campaign.export;" oncommand="campaign.exporter();" />
-                                <button label="&arcanik.mainmenu.campaign.remove;" oncommand="campaign.remove();" />
+                                <button label="&arcanik.mainmenu.campaign.remove;" oncommand="campaign.remove(0);" />
                             </hbox>
                             <vbox id="arcanik-campaign-labs" />
                         </vbox><spacer flex="1" /></hbox>
@@ -256,22 +253,50 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     <!-- -->
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
-            <!-- -->
-            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><!-- CREATION D'UNE UNITÉ -->
-                <!-- -->
-                <label value="test - creation of a new unit" />
-                <!-- -->
-                <!-- -->
-            <spacer flex="1" /></hbox><spacer flex="1" /></vbox>
-            <!-- -->
-            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- IMPORT D'UNE UNITÉ -->
-                <html:h3>&arcanik.mainmenu.campaign.import.titre;</html:h3>
-                <deck id="arcanik-import-deck">
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- CREATION D'UNE UNITÉ -->
+                <html:h3>&arcanik.mainmenu.campaign.create.titre;</html:h3>
+                <deck id="arcanik-create-deck">
+                    <vbox>
+                        <label value="&arcanik.mainmenu.campaign.create.namelab;" class="arcanik-voile-lab" />
+                        <textbox id="arcanik-create-textbox" maxlength="18" />
+                        <hbox>
+                            <button label="&arcanik.mainmenu.campaign.create.create;" oncommand="campaign.create(1);" />
+                            <button label="&arcanik.mainmenu.campaign.create.cancel;" oncommand="voile.toggle();" />
+                        </hbox>
+                    </vbox>
+                    <!-- -->
+                    <vbox>
+                        <!-- -->
+                        <label value="&arcanik.mainmenu.campaign.create.double;" class="arcanik-voile-lab" />
+                        <!-- -->
+                        <hbox>
+                            <!-- -->
+                            <button label="&arcanik.mainmenu.campaign.create.retry;" oncommand="voile.toggle();campaign.create(0);" />
+                            <!-- -->
+                            <button label="&arcanik.mainmenu.campaign.create.cancel;" oncommand="voile.toggle();" />
+                            <!-- -->
+                        </hbox>
+                        <!-- -->
+                    </vbox>
+                    <!-- -->
                     <vbox>
                         <!-- -->
                         <!-- -->
                         <!-- -->
-                        <!-- -->
+                    </vbox>
+                    <!-- -->
+                </deck>
+            </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- IMPORT D'UNE UNITÉ -->
+                <html:h3>&arcanik.mainmenu.campaign.import.titre;</html:h3>
+                <deck id="arcanik-import-deck">
+                    <vbox>
+                        <label value="&arcanik.mainmenu.campaign.import.successlab;" class="arcanik-voile-lab" />
+                        <label value="&arcanik.mainmenu.campaign.import.askplay;" class="arcanik-voile-lab" />
+                        <hbox>
+                            <button label="&arcanik.mainmenu.campaign.import.play;" oncommand="voile.toggle();campaign.play();" />
+                            <button label="&arcanik.mainmenu.campaign.import.close;" oncommand="voile.toggle();" />
+                        </hbox>
                     </vbox>
                     <vbox>
                         <label value="&arcanik.mainmenu.campaign.import.failedlab;" class="arcanik-voile-lab" />
@@ -305,13 +330,22 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     </vbox>
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
-            <!-- -->
-            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><!-- SUPRESSION D'UNE UNITÉ -->
-                <!-- -->
-                <label value="test - suppress unit" />
-                <!-- -->
-                <!-- -->
-            <spacer flex="1" /></hbox><spacer flex="1" /></vbox>
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- SUPRESSION D'UNE UNITÉ -->
+                <html:h3>&arcanik.mainmenu.campaign.remove.titre;</html:h3>
+                <deck id="arcanik-remove-deck">
+                    <vbox>
+                        <label value="&arcanik.mainmenu.campaign.remove.asklab;" class="arcanik-voile-lab" />
+                        <hbox>
+                            <button label="&arcanik.mainmenu.campaign.remove.valid;" oncommand="campaign.remove(1);" />
+                            <button label="&arcanik.mainmenu.campaign.remove.cancel;" oncommand="voile.toggle();" />
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <label value="&arcanik.mainmenu.campaign.remove.endlab;" class="arcanik-voile-lab" />
+                        <hbox><button label="&arcanik.mainmenu.campaign.remove.close;" oncommand="voile.toggle();" /></hbox>
+                    </vbox>
+                </deck>
+            </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
             <!-- -->
             <vbox><spacer flex="1" /><hbox><spacer flex="1" /><!-- ??? -->
                 <!-- -->

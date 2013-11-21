@@ -56,16 +56,85 @@ var ajaxfun = function (add,tabp,fres,type,sync) {
     ajax.send(d);
 }
 /*RUNE CREATION*/
-function creaRune (ch,rot,dist,prt,id=null) {
-    var dict = {"transform":"rotate("+rot+"),translate(0,-"+dist+")"}; if (id != null) dict["id"] = id;
-    var rune = addnode(2,"g",dict,prt);
-    if (ch[0] == "y") addnode(2,"use",{"xlink:href":"#rune-core"},rune);
-    if (ch[1] == "y") addnode(2,"use",{"xlink:href":"#rune-left-down"},rune);
-    if (ch[2] == "y") addnode(2,"use",{"xlink:href":"#rune-left-middle"},rune);
-    if (ch[3] == "y") addnode(2,"use",{"xlink:href":"#rune-left-up"},rune);
-    if (ch[4] == "y") addnode(2,"use",{"xlink:href":"#rune-right-down"},rune);
-    if (ch[5] == "y") addnode(2,"use",{"xlink:href":"#rune-right-middle"},rune);
-    if (ch[6] == "y") addnode(2,"use",{"xlink:href":"#rune-right-up"},rune);
+runes_paths = [
+    "","M0 -9 L9 0 L0 9 L-9 0 Z","M-1 9 L-9 9 L-19 1 L-11 1 Z","M0 -9 L9 0 L0 9 L-9 9 L-19 1 L-9 1 Z","M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z",
+    "M0 9 L-9 -1 L-19 -1 L-9 -9 L0 -9 L9 0 Z","M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L -11 0 Z","M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L9 0 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z","M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M0 -9 L9 0 L0 9 L-9 0 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M-1 9 L-9 9 L-19 1 L-11 1 Z","M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M0 -9 L9 0 L0 9 L-9 9 L-19 1 L-9 1 Z",
+    "M-11 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -11 Z","M0 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 0 Z",
+    "M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -11 L-11 0 Z","M-1 -9 L-1 -19 L-9 -19 L-9 -9 L-19 0 L-9 9 L-1 9 L9 0 Z",
+    "M1 9 L9 9 L19 1 L11 1 Z","M1 9 L9 9 L19 1 L9 1 L0 -9 L-9 0 Z","M1 9 L9 9 L19 1 L11 1 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M9 9 L19 1 L9 1 L0 -9 L-9 1 L-19 1 L-9 9 Z","M1 9 L9 9 L19 1 L11 1 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z",
+    "M1 9 L-9 -1 L-19 -1 L-9 -9 L-1 -9 L9 1 L19 1 L9 9 Z","M1 9 L9 9 L19 1 L11 1 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L -11 0 Z",
+    "M9 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L9 1 L19 1 Z","M1 9 L9 9 L19 1 L11 1 Z M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M1 9 L9 9 L19 1 L9 1 L0 -9 L-9 0 Z","M1 9 L9 9 L19 1 L11 1 Z M-1 9 L-9 9 L-19 1 L-11 1 Z M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M9 9 L19 1 L9 1 L0 -9 L-9 1 L-19 1 L-9 9 Z","M1 9 L9 9 L19 1 L11 1 Z M-11 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -11 Z",
+    "M1 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 1 L19 1 L9 9 Z","M1 9 L9 9 L19 1 L11 1 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -11 L-11 0 Z",
+    "M-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 1 L19 1 L9 9 Z","M1 -9 L9 -9 L19 -1 L11 -1 Z","M 0 9 L-9 0 L1 -9 L9 -9 L19 -1 L9 -1 Z",
+    "M1 -9 L9 -9 L19 -1 L11 -1 Z M-1 9 L-9 9 L-19 1 L-11 1 Z","M-9 9 L-19 1 L-9 1 L1 -9 L9 -9 L19 -1 L9 -1 L-1 9 Z",
+    "M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z M1 -9 L9 -9 L19 -1 L11 -1 Z","M0 9 L-9 -1 L-19 -1 L-9 -9 L9 -9 L19 -1 L9 -1 Z",
+    "M1 -9 L9 -9 L19 -1 L11 -1 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L -11 0 Z","M-1 9 L-9 9 L-19 0 L-9 -9 L9 -9 L19 -1 L9 -1 Z",
+    "M1 -9 L9 -9 L19 -1 L11 -1 Z M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z","M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M1 -9 L9 -9 L19 -1 L9 -1 L0 9 L-9 0 Z",
+    "M1 -9 L9 -9 L19 -1 L11 -1 Z M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M-9 9 L-19 1 L-9 1 L1 -9 L9 -9 L19 -1 L9 -1 L-1 9 Z","M-11 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -11 Z M1 -9 L9 -9 L19 -1 L11 -1 Z",
+    "M0 9 L9 -1 L19 -1 L9 -9 L-1 -9 L-1 -19 L-9 -19 L-9 -9 L-19 -1 L-9 -1 Z","M1 -9 L9 -9 L19 -1 L11 -1 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -11 L-11 0 Z",
+    "M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 -9 L19 -1 L9 -1 Z","M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z","M1 9 L-9 0 L1 -9 L9 -9 L19 0 L9 9 Z",
+    "M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z M-1 9 L-9 9 L-19 1 L-11 1 Z","M9 9 L-9 9 L-19 1 L-9 1 L1 -9 L9 -9 L19 0 Z",
+    "M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z","M1 9 L-9 -1 L-19 -1 L-9 -9 L9 -9 L19 0 L9 9 Z",
+    "M-1 -9 L-9 -9 L-19 0 L-9 9 L-1 9 L-11 0 Z M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z","M9 9 L-9 9 L-19 0 L-9 -9 L9 -9 L19 0 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z","M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M1 -9 L9 -9 L19 0 L9 9 L1 9 L-9 0 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-1 -11 L-9 -11 L-9 -19 L-1 -19 Z M9 9 L19 0 L9 -9 L1 -9 L-9 1 L-19 1 L-9 9 Z","M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z M-11 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -11 Z",
+    "M1 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 -9 L19 0 L9 9 Z","M1 -9 L9 -9 L19 0 L9 9 L1 9 L11 0 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -11 L-11 0 Z",
+    "M-9 9 L-19 0 L-9 -9 L-9 -19 L-1 -19 L-1 -9 L9 -9 L19 0 L9 9 Z","M1 -11 L9 -11 L9 -19 L1 -19 Z","M1 -11 L9 -11 L9 -19 L1 -19 Z M0 -9 L9 0 L0 9 L-9 0 Z",
+    "M1 -11 L9 -11 L9 -19 L1 -19 Z M-1 9 L-9 9 L-19 1 L-11 1 Z","M0 -9 L9 0 L0 9 L-9 9 L-19 1 L-9 1 Z M1 -11 L9 -11 L9 -19 L1 -19 Z",
+    "M1 -11 L9 -11 L9 -19 L1 -19 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z","M1 -11 L9 -11 L9 -19 L1 -19 Z M0 9 L-9 -1 L-19 -1 L-9 -9 L0 -9 L9 0 Z",
+    "M1 -11 L9 -11 L9 -19 L1 -19 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L -11 0 Z","M1 -11 L9 -11 L9 -19 L1 -19 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L9 0 Z",
+    "M-9 -11 L-9 -19 L9 -19 L9 -11 Z","M-9 -11 L-9 -19 L9 -19 L9 -11 Z M0 -9 L9 0 L0 9 L-9 0 Z","M-9 -11 L-9 -19 L9 -19 L9 -11 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-9 -11 L-9 -19 L9 -19 L9 -11 Z M0 -9 L9 0 L0 9 L-9 9 L-19 1 L-9 1 Z","M9 -19 L9 -11 L-1 -11 L-11 -1 L-19 -1 L-9 -9 L-9 -19 Z",
+    "M0 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L9 0 Z","M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L-11 0 Z",
+    "M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L9 0 Z","M1 -11 L1 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z",
+    "M1 -11 L1 -19 L9 -19 L9 -11 Z M1 9 L-9 0 L1 -9 L9 1 L19 1 L9 9 Z","M1 -11 L1 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M1 -11 L1 -19 L9 -19 L9 -11 Z M-9 9 L-19 1 L-9 1 L0 -9 L9 1 L19 1 L9 9 Z","M1 -11 L1 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z",
+    "M1 -11 L1 -19 L9 -19 L9 -11 Z M1 9 L-9 -1 L-19 -1 L-9 -9 L-1 -9 L9 1 L19 1 L9 9 Z","M1 -11 L1 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L-11 0 Z",
+    "M1 -11 L1 -19 L9 -19 L9 -11 Z M-9 9 L-19 0 L-9 -9 L-1 -9 L9 1 L19 1 L9 9 Z","M-9 -11 L-9 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z",
+    "M-9 -11 L-9 -19 L9 -19 L9 -11 Z M1 9 L-9 0 L1 -9 L9 1 L19 1 L9 9 Z","M-9 -11 L-9 -19 L9 -19 L9 -11 Z M11 1 L19 1 L9 9 L1 9 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-9 -11 L-9 -19 L9 -19 L9 -11 Z M-9 9 L-19 1 L-9 1 L0 -9 L9 1 L19 1 L9 9 Z","M11 1 L19 1 L9 9 L1 9 Z M-11 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 Z",
+    "M1 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L9 1 L19 1 L9 9 Z","M11 1 L19 1 L9 9 L1 9 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L-11 0 Z",
+    "M-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -11 L-1 -11 L9 1 L19 1 L9 9 Z","M11 -1 L1 -11 L1 -19 L9 -19 L9 -9 L19 -1 Z",
+    "M0 9 L-9 0 L1 -9 L1 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M11 -1 L1 -11 L1 -19 L9 -19 L9 -9 L19 -1 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-1 9 L-9 9 L-19 1 L-9 1 L1 -9 L1 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M11 -1 L1 -11 L1 -19 L9 -19 L9 -9 L19 -1 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z",
+    "M0 9 L-9 -1 L-19 -1 L-9 -9 L1 -9 L1 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M11 -1 L1 -11 L1 -19 L9 -19 L9 -9 L19 -1 Z M-1 9 L-9 9 L-19 0 L-9 -9 L-1 -9 L -11 0 Z",
+    "M-1 9 L-9 9 L-19 0 L-9 -9 L1 -9 L1 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M-9 -11 L-9 -19 L9 -19 L9 -9 L19 -1 L11 -1 L1 -11 Z",
+    "M0 9 L-9 0 L1 -11 L-9 -11 L-9 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M-9 -11 L-9 -19 L9 -19 L9 -9 L19 -1 L11 -1 L1 -11 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-1 9 L-9 9 L-19 1 L-9 1 L1 -11 L-9 -11 L-9 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M-11 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 -1 L11 -1 L0 -11 Z",
+    "M0 9 L-9 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 -1 L9 -1 L0 -11 L-11 0 Z",
+    "M-1 9 L-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 -1 L9 -1 Z","M1 9 L11 0 L1 -11 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z",
+    "M1 9 L-9 0 L1 -9 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M1 9 L11 0 L1 -11 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-9 9 L-19 1 L-9 1 L1 -9 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M1 9 L11 0 L1 -11 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z M-11 -1 L-19 -1 L-9 -9 L-1 -9 Z",
+    "M1 9 L9 9 L19 0 L9 -9 L9 -19 L1 -19 L1 -9 L-9 -9 L-19 -1 L-9 -1 Z","M-1 -9 L-9 -9 L-19 0 L-9 9 L-1 9 L-11 0 Z M1 -11 L1 -19 L9 -19 L9 -9 L19 0 L9 9 L1 9 L11 0 Z",
+    "M-9 9 L-19 0 L-9 -9 L1 -9 L1 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M-9 -11 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 L1 9 L11 0 L1 -11 Z",
+    "M1 9 L-9 0 L1 -11 L-9 -11 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M-9 -11 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 L1 9 L11 0 L1 -11 Z M-1 9 L-9 9 L-19 1 L-11 1 Z",
+    "M-9 9 L-19 1 L-9 1 L1 -11 L-9 -11 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M1 9 L11 0 L0 -11 L-11 -1 L-19 -1 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 Z",
+    "M1 9 L-9 1 L-19 1 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 Z","M-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 L1 9 L11 0 L0 -11 L-11 0 L-1 9 Z",
+    "M-9 9 L-19 0 L-9 -9 L-9 -19 L9 -19 L9 -9 L19 0 L9 9 Z",
+];
+function addRune (idx,pos,rot,prt,id=null) {
+    var nod = doc.createElementNS("http://www.w3.org/2000/svg","g"); if (id != null) nod.setAttribute("id",id);
+    nod.setAttribute("transform","rotate("+rot+"),translate(0,-"+pos+")");
+    var pth = doc.createElementNS("http://www.w3.org/2000/svg","path"); pth.setAttribute("d",runes_paths[idx]);
+    pth.setAttribute("filter","url(#filt)"); prt.appendChild(nod); nod.appendChild(pth);
+    pth = doc.createElementNS("http://www.w3.org/2000/svg","path"); pth.setAttribute("d",runes_paths[idx]);
+    nod.appendChild(pth); prt.appendChild(nod);
+}
+var rune_blurval = 0; var rune_invert = false;
+function rune_bluring () {
+    var nod = doc.byID("filt");
+    nod.setAttribute("width",10+rune_blurval*4); nod.setAttribute("height",10+rune_blurval*4);
+    doc.byID("radius",rune_blurval*3); doc.byID("gauss").setAttribute("stdDeviation",rune_blurval);
+    if (invert) { if (rune_blurval == 1) rune_invert = false; rune_blurval--; }
+    else { if (rune_blurval == 9) irune_nvert = true; rune_blurval++; }
+    window.setTimeout(rune_bluring,120);
 }
 /*BASE INIT*/
 var db = null, prefs = Services.prefs, arc_strs = null, voile = null;
@@ -87,5 +156,59 @@ function voileClass () {
 function quit () {
     var audio_lst = doc.byTAG("html:audio"); for (var it=0; it < audio_lst.length; it++) audio_lst[it].pause();
     db.close().then(function onClose () { window.setTimeout("Services.startup.quit(Services.startup.eAttemptQuit);",500); });
+}
+/*3D OBJECTS*/
+var scene3D = {
+   canvas: null, height:0, width:0, view_ang: 0, renderer: null, nb_lghts: 20, loader: null,
+   //
+   centcam: null, camera: null, canmove: false, scene: null,
+   //
+   init3D: function (zone3D_id) {
+       this.canvas = doc.byID(zone3D_id); this.view_ang = 45;
+       this.width = this.canvas.clientWidth; this.height = this.canvas.clientHeight; var aspect = this.width / this.height;
+       var near = 0.1; var far = 1000; this.loader = new THREE.JSONLoader();
+       //
+       window.dump(this.width);
+       window.dump(this.height);
+       window.dump("\n");
+       //
+       container = doc.byID(zone3D_id).parentNode;
+       //
+       this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true});
+       //
+       this.renderer.setSize(this.width,this.height);
+       //
+       this.camera = new THREE.PerspectiveCamera(this.view_ang,aspect,near,far);
+       //
+       this.scene = new THREE.Scene();
+       //
+       this.scene.add(this.camera);
+       //
+       //this.camera.position.set(0,-20,20);
+       //
+       this.camera.position.z = 300;
+       //
+       // TEST
+       //
+       var spheremat = new THREE.MeshLambertMaterial({color:0xCC0000});
+       var sphere = new THREE.Mesh(new THREE.SphereGeometry(20,16,16),spheremat);
+       //
+       this.scene.add(sphere);
+       //
+       var env_light = new THREE.AmbientLight(0x404040); this.scene.add(env_light);
+       //
+       //pointLight.position.x = 10
+       //
+       // TEST
+       //
+       //this.canvas.append(this.renderer);
+       //
+       this.centcam = new THREE.Object3D();
+       //
+       // TODO : init de la 3D
+       //
+       this.renderer.render(this.scene,this.camera);
+       //
+   }
 }
 

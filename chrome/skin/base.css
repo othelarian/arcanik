@@ -14,7 +14,7 @@ button:hover {text-decoration:underline;}
 groupbox {border:solid 2px #bbbbbb;border-radius:10px;}
 groupbox caption {background-color:white;font-size:1.1em;}
 
-polygon {fill:#83FFFF;stroke:#83FFFF;stroke-width:2;}
+path {fill:#83FFFF;stroke:#83FFFF;stroke-width:2;}
 
 .arcanik-runecircle {fill:none;stroke:#83FFFF;stroke-width:10;}
 .arcanik-voile-lab {font-size:1.4em;}

@@ -4,13 +4,10 @@
 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <svg:svg id="arcanik-svghead-defs"><svg:defs>
-    <svg:polygon id="rune-core" points="0,-10 10,0 0,10 -10,0" />
-    <svg:polygon id="rune-left-down" points="-10,0 -20,0 -10,10 0,10" />
-    <svg:polygon id="rune-left-middle" points="-10,0 -20,0 -10,-10 0,-10" />
-    <svg:polygon id="rune-left-up" points="0,-10 -10,-10 -10,-20 0,-20" />
-    <svg:polygon id="rune-right-down" points="10,0 20,0 10,10 0,10" />
-    <svg:polygon id="rune-right-middle" points="10,0 20,0 10,-10 0,-10" />
-    <svg:polygon id="rune-right-up" points="0,-10 10,-10 10,-20 0,-20" />
+    <filter id="filt" width="10" height="10">
+        <feMorphology id="dilat" operator="dilate" result="dilation" in="SourceGraphic" radius="0" />
+        <feGaussianBlur id="gauss" in="dilation" stdDeviation="7" />
+    </filter>
 </svg:defs></svg:svg>
 
 </overlay>
