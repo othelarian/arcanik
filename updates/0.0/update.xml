@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<updates>
+	<update type="minor" name="arcanik" appVersion="0.1">
+		<patch type="partial" URL="http://www.arcns.net/arcanik/updates/v0.0/arcanik_0-0_0-1_partial.mar" hashFunction="sha1"
+			hashValue="687c85ea5ce05d590b3931be2de95ef9d3e5cdfb" size="4437" />
+		<patch type="complete" URL="http://www.arcns.net/arcanik/updates/v0.1/arcanik_0-1_complete.mar" hashFunction="sha1"
+			hashValue="02e361b8c2dff1662b5d7ea49b3916230e7ebb88" size="325245" />
+	</update>
+</updates>
