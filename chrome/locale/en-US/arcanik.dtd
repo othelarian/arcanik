@@ -9,23 +9,22 @@
 <!ENTITY arcanik.mainmenu.credits "Credits">
 <!ENTITY arcanik.mainmenu.options "Options">
 <!ENTITY arcanik.mainmenu.quit "Quit">
-
 <!ENTITY arcanik.mainmenu.campaign.neworimportlab "Create a unit / import a unit">
 <!ENTITY arcanik.mainmenu.campaign.new "Create">
 <!ENTITY arcanik.mainmenu.campaign.import "Import">
 <!ENTITY arcanik.mainmenu.campaign.play "Play">
 <!ENTITY arcanik.mainmenu.campaign.export "Export">
 <!ENTITY arcanik.mainmenu.campaign.remove "Delete">
-
 <!ENTITY arcanik.mainmenu.campaign.create.titre "New unit :">
-
 <!ENTITY arcanik.mainmenu.campaign.create.namelab "Name of the unit :">
 <!ENTITY arcanik.mainmenu.campaign.create.create "Create">
 <!ENTITY arcanik.mainmenu.campaign.create.cancel "Cancel">
 <!ENTITY arcanik.mainmenu.campaign.create.double "A unit with the same name already exists.">
 <!ENTITY arcanik.mainmenu.campaign.create.retry "Return">
-
-
+<!ENTITY arcanik.mainmenu.campaign.create.successlab "The unit was successfully created.">
+<!ENTITY arcanik.mainmenu.campaign.create.asklab "Do you want to play with the created unit ?">
+<!ENTITY arcanik.mainmenu.campaign.create.play "Play">
+<!ENTITY arcanik.mainmenu.campaign.create.finish "Finish">
 <!ENTITY arcanik.mainmenu.campaign.import.titre "Import :">
 <!ENTITY arcanik.mainmenu.campaign.import.successlab "The unit was successfully imported.">
 <!ENTITY arcanik.mainmenu.campaign.import.askplay "Do you want to play with the imported unit ?">
@@ -47,6 +46,10 @@
 <!ENTITY arcanik.mainmenu.campaign.remove.cancel "Cancel">
 <!ENTITY arcanik.mainmenu.campaign.remove.endlab "The unit was deleted.">
 <!ENTITY arcanik.mainmenu.campaign.remove.close "OK">
+<!ENTITY arcanik.mainmenu.mission.nounit.titre "No unit !">
+<!ENTITY arcanik.mainmenu.mission.nounit.lab1 "You must create at least one unit">
+<!ENTITY arcanik.mainmenu.mission.nounit.lab2 "in campaign mode.">
+<!ENTITY arcanik.mainmenu.mission.nounit.return "Return">
 
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphism :">
@@ -78,6 +81,8 @@
 <!ENTITY arcanik.mainmenu.maj.cancel "Cancel">
 <!ENTITY arcanik.mainmenu.maj.newmaj "A new version is available :">
 <!ENTITY arcanik.mainmenu.maj.domaj "Do upgrade">
-
+<!ENTITY arcanik.mainmenu.maj.failed "Impossible to download the update.">
+<!ENTITY arcanik.mainmenu.maj.successlab "The update was successfully downloaded.">
+<!ENTITY arcanik.mainmenu.maj.successwait "The game will restart now.">
 <!ENTITY arcanik.mainmenu.framereturn "Main menu">
 

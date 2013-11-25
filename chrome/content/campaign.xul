@@ -5,13 +5,17 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://arcanik/locale/" >
 
-<window id="arcanik-campaign" title="" onload=""
+<?xul-overlay href="chrome://arcanik/content/game.xul" ?>
+<?xul-overlay href="chrome://arcanik/content/svg_defs.xul" ?>
+
+<window id="arcanik-campaign" title="Arcanik" onload="initGame();"
 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xlink="http://www.w3/org/1999/xlink"
 xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http:www.w3.org/1999/xhtml">
 
-<html:head id="arcanik-header" />
+    <html:head id="arcanik-header" />
 
+    <stack id="arcanik-game-stack">
+    </stack>
 
-	
 </window>
 

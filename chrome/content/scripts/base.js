@@ -139,11 +139,7 @@ function rune_bluring () {
 /*BASE INIT*/
 var db = null, prefs = Services.prefs, arc_strs = null, voile = null;
 var Cc = Components.classes, Ci = Components.interfaces, Cr = Components.results;
-function initBase () {
-    voile = new voileClass(); arc_strs = doc.byID("arcanik-strings");
-    //
-    //
-}
+function initBase () { voile = new voileClass(); arc_strs = doc.byID("arcanik-strings"); }
 /*VOILE CLASS*/
 function voileClass () {
     this.voile = null; this.deck = null; this.state = true;
@@ -161,49 +157,72 @@ function quit () {
 var scene3D = {
    canvas: null, height:0, width:0, view_ang: 0, renderer: null, nb_lghts: 20, loader: null,
    //
-   centcam: null, camera: null, canmove: false, scene: null,
+   centcam: null, camera: null, canmove: false, scene: null, usemap: false,
    //
-   init3D: function (zone3D_id) {
+   initScene: function (name) { ajaxfun("chrome://arcanik/content/models/scenes/"+name,"",scene3D.loadScene,false,true); },
+   loadScene: function (res) {
+       //
+       window.dump(res); window.dump("\n");
+       //
+       scene3D.loader.load("chrome://arcanik/content/models/socles/socle_test.json",scene3D.testloader);
+       //
+   },
+   cleanScene: function () {
+       //
+       //
+       //
+   },
+   //
+   testloader: function (geom,mats) {
+       //
+       var mat_model = new THREE.MeshFaceMaterial(mats);
+       //
+       var bld_model = new THREE.Mesh(geom,mat_model);
+       //
+       scene3D.scene.add(bld_model);
+       //
+       scene3D.renderer.render(scene3D.scene,scene3D.camera);
+       //
+   },
+   //
+   //
+   init3D: function (zone3D_id,initScene,usemap=false) {
        this.canvas = doc.byID(zone3D_id); this.view_ang = 45;
        this.width = this.canvas.clientWidth; this.height = this.canvas.clientHeight; var aspect = this.width / this.height;
-       var near = 0.1; var far = 1000; this.loader = new THREE.JSONLoader();
+       var near = 0.1; var far = 1000; this.initScene(initScene);
        //
-       window.dump(this.width);
-       window.dump(this.height);
-       window.dump("\n");
+       window.dump(this.width); window.dump(this.height); window.dump("\n");
        //
-       container = doc.byID(zone3D_id).parentNode;
-       //
-       this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true});
-       //
-       this.renderer.setSize(this.width,this.height);
-       //
+       this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true}); this.renderer.setSize(this.width,this.height);
        this.camera = new THREE.PerspectiveCamera(this.view_ang,aspect,near,far);
        //
        this.scene = new THREE.Scene();
        //
        this.scene.add(this.camera);
        //
-       //this.camera.position.set(0,-20,20);
+       this.camera.position.set(0,0,50);
        //
-       this.camera.position.z = 300;
-       //
-       // TEST
-       //
-       var spheremat = new THREE.MeshLambertMaterial({color:0xCC0000});
-       var sphere = new THREE.Mesh(new THREE.SphereGeometry(20,16,16),spheremat);
-       //
-       this.scene.add(sphere);
        //
        var env_light = new THREE.AmbientLight(0x404040); this.scene.add(env_light);
        //
-       //pointLight.position.x = 10
        //
        // TEST
+       var light = new THREE.PointLight(0xffffff,1,100);
+       light.position.set(0,0,10);
+       this.scene.add(light);
+       // TEST
+       //var pointLight = new THREE.PointLight
+       //pointLight.position.x = 10
+       //
        //
        //this.canvas.append(this.renderer);
        //
        this.centcam = new THREE.Object3D();
+       //
+       this.usemap = usemap;
+       //
+       this.loader = new THREE.JSONLoader();
+       //
        //
        // TODO : init de la 3D
        //

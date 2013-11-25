@@ -126,11 +126,33 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                         </vbox><spacer flex="1" /></hbox>
                         <hbox><button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" /></hbox>
                     </vbox>
-                    <box>
+                    <vbox>
                         <html:h2>&arcanik.mainmenu.titres.mission;</html:h2>
                         <!-- -->
                         <!-- -->
-                    </box>
+                        <label value="test - selection unit :" />
+                        <!-- -->
+                        <hbox>
+                            <!-- -->
+                            <spacer flex="50" />
+                            <!-- -->
+                            <label value="test - a unit" />
+                            <!-- -->
+                            <svg:svg />
+                            <!-- -->
+                        </hbox>
+                        <!-- -->
+                        <label value="test - selection mission :" />
+                        <!-- -->
+                        <hbox>
+                            <!-- -->
+                            <button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" />
+                            <!-- -->
+                            <!-- -->
+                        </hbox>
+                        <!-- -->
+                        <!-- -->
+                    </vbox>
                     <vbox>
                         <html:h2>&arcanik.mainmenu.titres.credits;</html:h2>
                         <grid>
@@ -238,19 +260,17 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                             <button label="&arcanik.mainmenu.maj.cancel;" oncommand="majSystem.cancel();" />
                         <spacer flex="1" /></hbox>
                     </vbox>
-                    <!-- -->
                     <vbox><!-- MAJ FAILED -->
-                        <!-- -->
-                        <!-- -->
-                        <!-- -->
+                        <label value="&arcanik.mainmenu.maj.failed;" class="arcanik-voile-lab" />
+                        <hbox>
+                            <button label="&arcanik.mainmenu.maj.retry;" oncommand="voile.doMaj();" />
+                            <button label="&arcanik.mainmenu.maj.cancel;" oncommand="voile.toggle();" />
+                        </hbox>
                     </vbox>
-                    <!-- -->
                     <vbox><!-- MAJ SUCCESSED -->
-                        <!-- -->
-                        <!-- -->
-                        <!-- -->
+                        <label value="&arcanik.mainmenu.maj.successlab;" class="arcanik-voile-lab" />
+                        <label value="&arcanik.mainmenu.maj.successwait;" class="arcanik-voile-lab" />
                     </vbox>
-                    <!-- -->
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
             <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- CREATION D'UNE UNITÉ -->
@@ -264,27 +284,21 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                             <button label="&arcanik.mainmenu.campaign.create.cancel;" oncommand="voile.toggle();" />
                         </hbox>
                     </vbox>
-                    <!-- -->
                     <vbox>
-                        <!-- -->
                         <label value="&arcanik.mainmenu.campaign.create.double;" class="arcanik-voile-lab" />
-                        <!-- -->
                         <hbox>
-                            <!-- -->
                             <button label="&arcanik.mainmenu.campaign.create.retry;" oncommand="voile.toggle();campaign.create(0);" />
-                            <!-- -->
                             <button label="&arcanik.mainmenu.campaign.create.cancel;" oncommand="voile.toggle();" />
-                            <!-- -->
                         </hbox>
-                        <!-- -->
                     </vbox>
-                    <!-- -->
                     <vbox>
-                        <!-- -->
-                        <!-- -->
-                        <!-- -->
+                        <label value="&arcanik.mainmenu.campaign.create.successlab;" class="arcanik-voile-lab" />
+                        <label value="&arcanik.mainmenu.campaign.create.asklab;" class="arcanik-voile-lab" />
+                        <hbox>
+                            <button label="&arcanik.mainmenu.campaign.create.play;" oncommand="voile.toggle();campaign.play();" />
+                            <button label="&arcanik.mainmenu.campaign.create.finish;" oncommand="voile.toggle();" />
+                        </hbox>
                     </vbox>
-                    <!-- -->
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
             <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- IMPORT D'UNE UNITÉ -->
@@ -346,12 +360,13 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     </vbox>
                 </deck>
             </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- NO UNIT MISSION ALERT -->
+                <html:h3>&arcanik.mainmenu.mission.nounit.titre;</html:h3>
+                <label value="&arcanik.mainmenu.mission.nounit.lab1;" class="arcanik-voile-lab" />
+                <label value="&arcanik.mainmenu.mission.nounit.lab2;" class="arcanik-voile-lab" />
+                <hbox><button label="&arcanik.mainmenu.mission.nounit.return;" oncommand="voile.toggle();" /></hbox>
+            </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
             <!-- -->
-            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><!-- ??? -->
-                <!-- -->
-                <!-- -->
-                <!-- -->
-            <spacer flex="1" /></hbox><spacer flex="1" /></vbox>
             <!-- -->
         </deck>
     </stack>

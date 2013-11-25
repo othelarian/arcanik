@@ -4,12 +4,9 @@ var campaign = null;
 var frames_state = 0, freeze = false, mainmenu_state = 0;
 /*INIT MAIN MENU FUNCTION*/
 function initMain () {
-    //init de bas
-    initBase();
+    //init de base
+    initBase(); scene3D.init3D("arcanik-mainmenu-3dzone","mainmenu.json");
     //
-    doc.byID("arcanik-mainmenu-3dzone").getContext("webgl");
-    //
-    scene3D.init3D("arcanik-mainmenu-3dzone");
     //
     //mise en place du gestionnaire d'options
     optionsSystem = new optionsClass();
@@ -26,7 +23,7 @@ function initMain () {
     //capture des évènements
     window.addEventListener("keydown",keycapt,false);
     window.addEventListener("DOMMouseScroll",wheelcapt,false);
-    //réglages des préférences
+    //réglages des options
     doc.byID("arcanik-options-screenmode").selectedIndex = (prefs.getBoolPref("arcanik.fullscreen"))? 0 : 1;
     doc.byID("arcanik-options-langchx").selectedIndex = (prefs.getCharPref("general.useragent.locale") == "fr-FR")? 0 : 1;
     if (prefs.getBoolPref("arcanik.music.active")) doc.byID("arcanik-options-music-active").checked = true;
@@ -40,6 +37,7 @@ function initMain () {
     //fermeture du launcher
     window.opener.close();
     //
+    //
     // TODO : lancement du mouvement de caméra et d'affichage de la mainframe
     //
     //
@@ -52,11 +50,12 @@ function initMain () {
 function keycapt (evt) {
     if (!voile.state) {
         switch (frames_state) {
+            case 0: switch (evt.keyCode) { case 8: case 13: case 27: voile.toggle(); break; } break; //main menu
             case 1: //campaign menu
                 switch (parseInt(doc.byID("arcanik-voile-deck").selectedIndex)) {
                     case 2: //creation
                         switch (evt.keyCode) {
-                            case 8: case 27: voile.toggle(); break; //touches BACK et ESC
+                            case 8: case 27: if (doc.byID("arcanik-create-deck").selectedIndex != 0) voile.toggle(); break; //touches BACK et ESC
                             case 13: //touche RETURN
                                 if (doc.byID("arcanik-create-deck").selectedIndex == 0) campaign.create(1);
                                 else if (doc.byID("arcanik-create-deck").selectedIndex == 1) { voile.toggle(); campaign.create(0); }
@@ -97,16 +96,11 @@ function keycapt (evt) {
                 break;
             case 4: //options menu
                 switch (evt.keyCode) {
-                case 8: case 27: //touches BACK et ESC
-                    //
-                    if (doc.byID("arcanik-maj-deck").selectedIndex == 2) {} // TODO : cas de fin de la mise à jour
-                    //
-                    else majSystem.cancel();
-                    break;
+                case 8: case 27: if (doc.byID("arcanik-maj-deck").selectedIndex == 3) {} else majSystem.cancel(); break; //touches BACK et ESC
                 case 13: //touche RETURN
                     if (doc.byID("arcanik-maj-deck").selectedIndex == 0) majSystem.retryCheck();
-                    //
-                    //
+                    else if (doc.byID("arcanik-maj-deck").selectedIndex == 3) {}
+                    else majSystem.doMaj();
                     break;
                 }
                 break;
@@ -211,16 +205,15 @@ function moveMainMenu (sens) {
 }
 /*SHOW FRAME FUNCTION*/
 function showFrame (n) {
-    //
-    if (n == 2) {} //mission menu
-    //
+    if (n == 2 && campaign.nbsaves == 0) { voile.toggle(); voile.show(6); return; }
     else if (n == 4) optionsSystem.reset();
     doc.byID("arcanik-mainmenu-deck").selectedIndex = n; frames_state = n;
     if (frames_state == 0) playSounds(2); else playSounds(1);
 }
 /*OPTIONS CLASS*/
 function optionsClass () {
-    this.windowed = null; this.lang = null; this.sounds = null; this.sounds_vol = null; this.music = null; this.music_vol = null;
+    this.windowed = null; this.lang = null; this.sounds = null; this.sounds_vol = null;
+    this.music = null; this.music_vol = null; this.initiate = true;
     this.verifChange = function () {
         var change = true;
         if (doc.byID("arcanik-options-screenmode").selectedIndex != this.windowed) change = false;
@@ -237,7 +230,7 @@ function optionsClass () {
         this.music_vol = doc.byID("arcanik-options-music-vol").value; this.sounds_vol = doc.byID("arcanik-options-sounds-vol").value;
         prefs.setBoolPref("arcanik.fullscreen",(this.windowed == 0)? true : false);
         prefs.setBoolPref("arcanik.music.active",this.music); prefs.setBoolPref("arcanik.sounds.active",this.sounds);
-        if (this.music) doc.byID("arcanik-main-music").play();
+        if (this.music) doc.byID("arcanik-main-music").play(); else doc.byID("arcanik-main-music").pause();
         prefs.setIntPref("arcanik.music.volume",this.music_vol); doc.byID("arcanik-main-music").volume = this.music_vol/100;
         prefs.setIntPref("arcanik.sounds.volume",this.sounds_vol);
         for (var it=0; it<3; it++) {
@@ -253,6 +246,7 @@ function optionsClass () {
         }
     }
     this.reset = function () {
+        if (this.initiate) { this.init(); this.initiate = false; }
         doc.byID("arcanik-options-screenmode").selectedIndex = this.windowed; doc.byID("arcanik-options-langchx").selectedIndex = this.lang;
         doc.byID("arcanik-options-music-active").checked = this.music; doc.byID("arcanik-options-sounds-active").checked = this.sounds;
         doc.byID("arcanik-options-music-vol").value = this.music_vol; doc.byID("arcanik-options-sounds-vol").value = this.sounds_vol;
@@ -269,7 +263,6 @@ function optionsClass () {
         }
         doc.byID("arcanik-main-music").volume = this.music_vol/100;
     }
-    this.init();
 }
 /*MAJ CLASS*/
 function majClass () {
@@ -278,14 +271,14 @@ function majClass () {
     this.checking = function () { majSystem.checker.checkForUpdates(majSystem.listener,true); }
     this.retryCheck = function () { doc.byID("arcanik-maj-deck").selectedIndex = 0; voile.show(0); window.setTimeout(majSystem.checking,500); }
     this.doMaj = function () {
-        //
-        voile.show(0);
-        //
-        //alert("do maj method");
-        //
-        //
+        voile.show(0); var aus = Cc["@mozilla.org/updates/update-service;1"].getService(Ci.nsIApplicationUpdateService);
+        var state = aus.downloadUpdate(this.listener.update,false);
+        if (state == "failed") {
+            try { aus.removeDownloadListener(maj_obs); } catch (e) { alert(e); }
+            voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 2;
+        }
+        else aus.addDownloadListener(this.maj_obs);
     }
-    //
     this.cancel = function () { doc.byID("arcanik-maj-deck").selectedIndex = 0; voile.show(0); voile.toggle(); }
     this.init = function () {
         this.checker = Cc["@mozilla.org/updates/update-checker;1"].createInstance(Ci.nsIUpdateChecker);
@@ -297,7 +290,7 @@ function majClass () {
                 for (var it=0; it<updateCount; it++) {
                     if (Services.appinfo.version < updates[it].appVersion) {
                         if (updates[it].type == "major") { found = true; chx = it; break; }
-                        if (found) { if (updates[chx].appVersion > updates[it].appVersion) chx = it; }
+                        if (found) { if (updates[chx].appVersion < updates[it].appVersion) chx = it; }
                         else { found = true; chx = it; }
                     }
                 }
@@ -317,22 +310,18 @@ function majClass () {
                     case Cr.NS_ERROR_CORRUPTED_CONTENT:
                     case Cr.NS_ERROR_UNEXPECTED:
                         if (u.state == "download-failed" && u.isCompleteUpdate) {
-                            //
-                            //try { //
-                            //
-                            //
+                            try { aus.removeDownloadListener(maj_obs); } catch (e) {}
+                            voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 2;
                         }
                         break;
                     case Cr.NS_OK:
-                        //
-                        //
-                        //
+                        voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 3;
+                        var um = Cc["@mozilla.org/updates/update-manager;1"].getService(Ci.nsIUpdateManager); um.activeUpdate = u; um.saveUpdates();
+                        window.setTimeout("Services.startup.quit(Services.startup.eAttemptQuit | Services.startup.eRestart);",2000);
                         break;
                     default:
-                        //
                         try { aus.removeDownloadListener(majSystem.maj_obs); } catch (e) { }
-                        //
-                        //
+                        voile.show(1); doc.byID("arcanik-maj-deck").selectedIndex = 2;
                         break;
                 }
             }
@@ -355,7 +344,7 @@ function campaignClass () {
                 var nod = doc.byID("arcanik-campaign-lab"+(parseInt(actdeck)+it)); if (it == 2) nod.style.display = "none"; else nod.setAttribute("class",clas+(it+2)); }
             if (actdeck == 1) {
                 doc.byID("arcanik-campaign-garrowup").style.display = "none"; doc.byID("arcanik-campaign-creaform").style.display = "block";
-                doc.byID("arcanik-campaign-saveform").style.display = "none";
+                doc.byID("arcanik-campaign-garrowdn").style.display = "block"; doc.byID("arcanik-campaign-saveform").style.display = "none";
             }
             else if (actdeck == (this.nbsaves)) doc.byID("arcanik-campaign-garrowdn").style.display = "block";
         }
@@ -368,6 +357,7 @@ function campaignClass () {
             if (actdeck == 0) {
                 doc.byID("arcanik-campaign-garrowup").style.display = "block"; doc.byID("arcanik-campaign-creaform").style.display = "none";
                 doc.byID("arcanik-campaign-saveform").style.display = "block";
+                if ((this.nbsaves-1) == 0) doc.byID("arcanik-campaign-garrowdn").style.display = "none";
             }
             else if (actdeck == (this.nbsaves-1)) doc.byID("arcanik-campaign-garrowdn").style.display = "none";
         }
@@ -376,26 +366,22 @@ function campaignClass () {
         switch (lvl) {
             case 0: voile.toggle(); voile.show(2); doc.byID("arcanik-create-deck").selectedIndex = 0; break;
             case 1:
-                campaign.tmpname = doc.byID("arcanik-create-textbox").value;
-                //
+                campaign.tmpname = doc.byID("arcanik-create-textbox").value; voile.show(0);
                 db.execute("SELECT COUNT(*) FROM saves WHERE name='"+campaign.tmpname+"';").then(function onStatementComplete (res) {
-                    //
-                    alert(campaign.tmpname);
-                    //
-                    alert(res[0].getResultByIndex(0));
-                    //
-                    if (res[0].getResultByIndex(0) == 1) {
-                        //
-                        //
-                        //
+                    if (res[0].getResultByIndex(0) == 1) { voile.show(2); doc.byID("arcanik-create-deck").selectedIndex = 1; }
+                    else {
+                        var req = "INSERT INTO saves (name) VALUES ('"+campaign.tmpname+"');";
+                        db.execute(req).then(function onStatementComplete (res) {
+                            var dte = new Date(); dte = dte.toLocaleString().replace("/","-"); campaign.insert(campaign.nbsaves,campaign.tmpname,dte,0,1,true);
+                            var actdeck = parseInt(doc.byID("arcanik-campaign-maindeck").selectedIndex);
+                            for (var it=0; it < (campaign.nbsaves-actdeck) && it<3 ;it++) doc.byID("arcanik-campaign-lab"+(actdeck+it)).style.display = "none";
+                            campaign.nbsaves++; doc.byID("arcanik-campaign-maindeck").selectedIndex = campaign.nbsaves;
+                            doc.byID("arcanik-campaign-garrowup").style.display = "block"; doc.byID("arcanik-campaign-garrowdn").style.display = "none";
+                            doc.byID("arcanik-campaign-creaform").style.display = "none"; doc.byID("arcanik-campaign-saveform").style.display = "block";
+                            voile.show(2); doc.byID("arcanik-create-deck").selectedIndex = 2;
+                        });
                     }
-                    //
-                    // TODO : vérification de non doublon du nom de l'unité
-                    //
-                    // TODO : création de la nouvelle unité
-                    //
                 });
-                //
                 break;
         }
     }
@@ -413,26 +399,12 @@ function campaignClass () {
                             var req = "INSERT INTO saves VALUES ('"+campaign.impsave["name"]+"','"+campaign.impsave["crea_date"]+"',";
                             req += campaign.impsave["time"]+",'"+campaign.impsave["data"]+"');";
                             db.execute(req).then(function onStatementComplete () {
-                                var node = addnode(0,"vbox",{"id":"arcanik-campaign-info"+campaign.nbsaves},doc.byID("arcanik-campaign-maindeck"));
-                                addnode(0,"label",{"value":campaign.impsave["name"],"class":"arcanik-mainmenu-campaign-mainlab"},node);
-                                node = addnode(0,"hbox",{"class":"arcanik-mainmenu-campaign-infos"},node);
-                                addnode(0,"label",{"value":campaign.impsave["crea_date"]},node); addnode(0,"spacer",{"flex":50},node);
-                                var timed = campaign.impsave["time"];
-                                if (timed > 59) {
-                                    if (timed > 3600) {
-                                        var tmp_time = ((timed - timed%3600)/3600)+":"+((timed%3600 < 600)? "0":"");
-                                        timed = tmp_time+((timed%3600 - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60);
-                                    }
-                                    else timed = ((timed - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60)
-                                } else timed += " secs";
-                                addnode(0,"label",{"value":timed},node);
-                                var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab1";
-                                var dict = {"value":campaign.impsave["name"],"class":clas,"id":"arcanik-campaign-lab"+campaign.nbsaves};
-                                node = addnode(0,"label",dict,doc.byID("arcanik-campaign-labs")); node.style.display = "none";
+                                campaign.insert(campaign.nbsaves,campaign.impsave["name"],campaign.impsave["crea_date"],campaign.impsave["time"],1,true);
                                 var actdeck = parseInt(doc.byID("arcanik-campaign-maindeck").selectedIndex);
                                 for (var it=0; it < (campaign.nbsaves-actdeck) && it<3 ;it++) doc.byID("arcanik-campaign-lab"+(actdeck+it)).style.display = "none";
                                 campaign.nbsaves++; doc.byID("arcanik-campaign-maindeck").selectedIndex = campaign.nbsaves;
-                                doc.byID("arcanik-campaign-garrowdn").style.display = "none";
+                                doc.byID("arcanik-campaign-garrowup").style.display = "block"; doc.byID("arcanik-campaign-garrowdn").style.display = "none";
+                                doc.byID("arcanik-campaign-creaform").style.display = "none"; doc.byID("arcanik-campaign-saveform").style.display = "block";
                                 voile.show(3); doc.byID("arcanik-import-deck").selectedIndex = 0;
                             });
                         }
@@ -461,13 +433,6 @@ function campaignClass () {
         }
         else { voile.toggle(); return; }
     }
-    this.play = function () {
-        //
-        alert("play");
-        //
-        // TODO : lancement du jeu
-        //
-    }
     this.remove = function (lvl) {
         switch (lvl) {
             case 0: voile.toggle(); voile.show(5); doc.byID("arcanik-remove-deck").selectedIndex = 0; break;
@@ -478,12 +443,35 @@ function campaignClass () {
                 doc.byID("arcanik-campaign-maindeck").selectedIndex--;
                 for (var it= actdeck; it < this.nbsaves; it++) doc.byID("arcanik-campaign-lab"+it).setAttribute("id","arcanik-campaign-lab"+(it-1));
                 this.nbsaves--;
-                if (actdeck == 1) doc.byID("arcanik-campaign-garrowup").style.display = "none";
+                if (actdeck == 1) {
+                    doc.byID("arcanik-campaign-garrowup").style.display = "none";
+                    doc.byID("arcanik-campaign-creaform").style.display = "block";
+                    doc.byID("arcanik-campaign-saveform").style.display = "none";
+                }
+                if (this.nbsaves == 0) doc.byID("arcanik-campaign-garrowdn").style.display = "none";
                 db.execute("DELETE FROM saves WHERE name='"+name+"';").then(function onStatementComplete (res) {
                     voile.show(5); doc.byID("arcanik-remove-deck").selectedIndex = 1; });
                 break;
         }
     }
+    this.insert = function (idx,name,date,timed,lvl,display) {
+        var node = addnode(0,"vbox",{"id":"arcanik-campaign-info"+idx},doc.byID("arcanik-campaign-maindeck"));
+        addnode(0,"label",{"value":name,"class":"arcanik-mainmenu-campaign-mainlab"},node);
+        node = addnode(0,"hbox",{"class":"arcanik-mainmenu-campaign-infos"},node);
+        addnode(0,"label",{"value":date},node); addnode(0,"spacer",{"flex":50},node);
+        if (timed > 59) {
+            if (timed > 3600) {
+                var tmp_time = ((timed - timed%3600)/3600)+":"+((timed%3600 < 600)? "0":"");
+                timed = tmp_time+((timed%3600 - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60);
+            }
+            else timed = ((timed - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60)
+        } else timed += " secs";
+        addnode(0,"label",{"value":timed},node);
+        var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab"+lvl;
+        var dict = {"value":name,"class":clas,"id":"arcanik-campaign-lab"+idx}; if (display) dict["style"] = "display:none;";
+        addnode(0,"label",dict,doc.byID("arcanik-campaign-labs"));
+    }
+    this.play = function () { play(true); }
     this.init = function () {
         addRune(109,0,0,doc.byID("arcanik-campaign-arrowup")); addRune(109,0,180,doc.byID("arcanik-campaign-arrowdn"));
         Sqlite.openConnection({path: "saves.sqlite"}).then(
@@ -494,26 +482,11 @@ function campaignClass () {
                         if (result) {
                             var req = "SELECT name,crea_date,time FROM saves;";
                             db.execute(req).then(function onStatementComplete(result) {
-                                campaign.nbsaves = result.length; doc.byID("arcanik-campaign-garrowdn").style.display = "block";
+                                campaign.nbsaves = result.length;
+                                if (result.length > 0) doc.byID("arcanik-campaign-garrowdn").style.display = "block";
                                 for (idx in result) {
-                                    var node = addnode(0,"vbox",{"id":"arcanik-campaign-info"+idx},doc.byID("arcanik-campaign-maindeck"));
-                                    addnode(0,"label",{"value":result[idx].getResultByIndex(0),"class":"arcanik-mainmenu-campaign-mainlab"},node);
-                                    node = addnode(0,"hbox",{"class":"arcanik-mainmenu-campaign-infos"},node);
-                                    addnode(0,"label",{"value":result[idx].getResultByIndex(1)},node); addnode(0,"spacer",{"flex":50},node);
-                                    var timed = parseInt(result[idx].getResultByIndex(2));
-                                    if (timed > 59) {
-                                        if (timed > 3600) {
-                                            var tmp_time = ((timed - timed%3600)/3600)+":"+((timed%3600 < 600)? "0":"");
-                                            timed = tmp_time+((timed%3600 - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60);
-                                        }
-                                        else timed = ((timed - timed%60)/60)+":"+((timed%60 < 10)? "0":"")+(timed%60)
-                                    } else timed += " secs";
-                                    addnode(0,"label",{"value":timed},node);
-                                    var lvl = 3; if (idx == 0 || idx == 1) lvl = parseInt(idx) + 1;
-                                    var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab"+lvl;
-                                    var dict = {"value":result[idx].getResultByIndex(0),"class":clas,"id":"arcanik-campaign-lab"+idx};
-                                    if (idx > 2) dict["style"] = "display:none;";
-                                    addnode(0,"label",dict,doc.byID("arcanik-campaign-labs"));
+                                    var lvl = 3; if (idx == 0 || idx == 1) lvl = parseInt(idx) + 1; var disp = (idx > 2)? true : false;
+                                    campaign.insert(idx,result[idx].getResultByIndex(0),result[idx].getResultByIndex(1),result[idx].getResultByIndex(2),lvl,disp);
                                 }
                             });
                         }
@@ -529,3 +502,28 @@ function campaignClass () {
     }
     this.init();
 }
+/*MISSION CLASS*/
+function missionClass () {
+    //
+    //
+    this.play = function () { play(false); }
+    this.init = function () {
+        //
+        //
+        //
+    }
+    //
+    this.init();
+}
+/*PLAY FUNCTION*/
+function play (camp) {
+    voile.toggle(); voile.show(0); var win = (camp)? "campaign" : "mission";
+    //
+    var args = "chrome";
+    //
+    if (prefs.getBoolPref("arcanik.fullscreen")) args += ",fullscreen,hidechrome";
+    else args += ",centerscreen";
+    //
+    window.open("chrome://arcanik/content/"+win+".xul","arcns-game",args);
+}
+

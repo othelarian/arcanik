@@ -4,8 +4,94 @@
 xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <html:head id="arcanik-header">
+        <svg:svg id="arcanik-svghead-defs" style="display:none;" />
+        <script type="application/x-javascript" src="scripts/three.min.js" />
+        <script type="application/x-javascript" src="scripts/base.js" />
+        <script type="application/x-javascript" src="scripts/game.js" />
+        <stringbundleset><stringbundle id="arcanik-strings" src="chrome://arcanik/locale/arcanik.properties" /></stringbundleset>
+        <commandset><command id="arcanik-cmd-quit" oncommand="quit();" /></commandset>
+        <keyset>
+            <key id="arcanik-key-quit" modifiers="accel" key="Q" command="arcanik-cmd-quit" />
+            <!-- -->
+            <!-- -->
+        </keyset>
+        <!-- -->
+        <!-- -->
+        <html:audio id="arcanik-main-music"><html:source src="chrome://arcanik/content/musics/main.wav" /></html:audio>
+
+        <html:audio id="arcanik-main-son-main-0"><html:source src="chrome://arcanik/content/sounds/main_menu_main.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-main-1"><html:source src="chrome://arcanik/content/sounds/main_menu_main.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-main-2"><html:source src="chrome://arcanik/content/sounds/main_menu_main.wav" /></html:audio>
+
+        <html:audio id="arcanik-main-son-sel-0"><html:source src="chrome://arcanik/content/sounds/main_menu_sel.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-sel-1"><html:source src="chrome://arcanik/content/sounds/main_menu_sel.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-sel-2"><html:source src="chrome://arcanik/content/sounds/main_menu_sel.wav" /></html:audio>
+
+        <html:audio id="arcanik-main-son-aux-0"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-aux-1"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
+        <html:audio id="arcanik-main-son-aux-2"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
         <!-- -->
     </html:head>
+
+    <stack id="arcanik-game-stack">
+        <html:canvas id="arcanik-game-3dzone" width="100%" height="100%" />
+        <deck id="arcanik-game-deck">
+            <!-- -->
+            <box />
+            <!-- -->
+            <grid><!-- IN BASE INTERFACE -->
+                <columns>
+                    <!-- -->
+                    <column />
+                    <!-- -->
+                    <column />
+                    <!-- -->
+                    <column />
+                    <!-- -->
+                </columns>
+                <rows>
+                    <!-- -->
+                    <row>
+                        <!-- -->
+                        <spacer flex="1" />
+                        <!-- -->
+                        <hbox>
+                            <!-- -->
+                            <button label="test 1" />
+                            <!-- -->
+                            <button label="test 2" />
+                            <!-- -->
+                            <!-- -->
+                        </hbox>
+                        <!-- -->
+                        <!-- -->
+                    </row>
+                    <!-- -->
+                    <row>
+                        <!-- -->
+                        <!-- -->
+                    </row>
+                    <!-- -->
+                    <row>
+                        <!-- -->
+                        <!-- -->
+                    </row>
+                    <!-- -->
+                </rows>
+            </grid>
+            <!-- -->
+            <hbox><!-- IN GAME INTERFACE -->
+                <!-- -->
+                <!-- -->
+                <!-- -->
+            </hbox>
+            <!-- -->
+        </deck>
+        <box id="arcanik-voile" hidden="true" />
+        <!-- -->
+        <deck id="arcanik-voile-deck" hidden="true" />
+        <!-- -->
+    </stack>
 
 </overlay>
 

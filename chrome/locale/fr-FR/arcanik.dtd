@@ -9,25 +9,24 @@
 <!ENTITY arcanik.mainmenu.credits "Crédits">
 <!ENTITY arcanik.mainmenu.options "Options">
 <!ENTITY arcanik.mainmenu.quit "Quitter">
-
 <!ENTITY arcanik.mainmenu.campaign.neworimportlab "Créer une unité / importer une unité">
 <!ENTITY arcanik.mainmenu.campaign.new "Créer">
 <!ENTITY arcanik.mainmenu.campaign.import "Importer">
 <!ENTITY arcanik.mainmenu.campaign.play "Jouer">
 <!ENTITY arcanik.mainmenu.campaign.export "Exporter">
 <!ENTITY arcanik.mainmenu.campaign.remove "Supprimer">
-
 <!ENTITY arcanik.mainmenu.campaign.create.titre "Nouvelle unité :">
-
 <!ENTITY arcanik.mainmenu.campaign.create.namelab "Nom de l'unité :">
 <!ENTITY arcanik.mainmenu.campaign.create.create "Créer">
 <!ENTITY arcanik.mainmenu.campaign.create.cancel "Annuler">
 <!ENTITY arcanik.mainmenu.campaign.create.double "Une unité portant ce nom existe déjà.">
 <!ENTITY arcanik.mainmenu.campaign.create.retry "Retour">
-
-
+<!ENTITY arcanik.mainmenu.campaign.create.successlab "L'unité a été créée avec succès.">
+<!ENTITY arcanik.mainmenu.campaign.create.asklab "Voulez-vous jouer avec l'unité créée ?">
+<!ENTITY arcanik.mainmenu.campaign.create.play "Jouer">
+<!ENTITY arcanik.mainmenu.campaign.create.finish "Terminer">
 <!ENTITY arcanik.mainmenu.campaign.import.titre "Import :">
-<!ENTITY arcanik.mainmenu.campaign.import.successlab "L'unité a été impotée avec succès.">
+<!ENTITY arcanik.mainmenu.campaign.import.successlab "L'unité a été importée avec succès.">
 <!ENTITY arcanik.mainmenu.campaign.import.askplay "Voulez-vous jouer avec l'unité importée ?">
 <!ENTITY arcanik.mainmenu.campaign.import.play "Jouer">
 <!ENTITY arcanik.mainmenu.campaign.import.close "Terminer">
@@ -47,6 +46,10 @@
 <!ENTITY arcanik.mainmenu.campaign.remove.cancel "Annuler">
 <!ENTITY arcanik.mainmenu.campaign.remove.endlab "L'unité a été supprimée.">
 <!ENTITY arcanik.mainmenu.campaign.remove.close "OK">
+<!ENTITY arcanik.mainmenu.mission.nounit.titre "Aucune unité !">
+<!ENTITY arcanik.mainmenu.mission.nounit.lab1 "Vous devez créer au moins une unité">
+<!ENTITY arcanik.mainmenu.mission.nounit.lab2 "dans le mode campagne.">
+<!ENTITY arcanik.mainmenu.mission.nounit.return "Retour">
 
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphisme :">
@@ -78,6 +81,8 @@
 <!ENTITY arcanik.mainmenu.maj.cancel "Annuler">
 <!ENTITY arcanik.mainmenu.maj.newmaj "Une nouvelle version est disponible :">
 <!ENTITY arcanik.mainmenu.maj.domaj "Mettre à jour">
-
+<!ENTITY arcanik.mainmenu.maj.failed "Impossible de télécharger la mise à jour.">
+<!ENTITY arcanik.mainmenu.maj.successlab "La mise à jour a été téléchargée avec succès.">
+<!ENTITY arcanik.mainmenu.maj.successwait "Le jeu va redémarrer dans quelques instants.">
 <!ENTITY arcanik.mainmenu.framereturn "Menu principal">
 
