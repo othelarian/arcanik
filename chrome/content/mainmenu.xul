@@ -27,22 +27,24 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
         <html:audio id="arcanik-main-son-aux-0"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
         <html:audio id="arcanik-main-son-aux-1"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
         <html:audio id="arcanik-main-son-aux-2"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
+
+        <commandset><command id="arcanik-cmd-quit" oncommand="quit();" /></commandset>
+        <keyset><key id="arcanik-key-quit" modifiers="accel" key="Q" command="arcanik-cmd-quit" /></keyset>
+        <stringbundleset><stringbundle id="arcanik-strings" src="chrome://arcanik/locale/arcanik.properties" /></stringbundleset>
+    
+        <script type="application/x-javascript" src="scripts/three.min.js" />
+        <script type="application/x-javascript" src="scripts/base.js" />
+        <script type="application/x-javascript" src="scripts/mainmenu.js" />
     </html:head>
 
-    <commandset><command id="arcanik-cmd-quit" oncommand="quit();" /></commandset>
-
-    <keyset><key id="arcanik-key-quit" modifiers="accel" key="Q" command="arcanik-cmd-quit" /></keyset>
-
-    <stringbundleset><stringbundle id="arcanik-strings" src="chrome://arcanik/locale/arcanik.properties" /></stringbundleset>
-
-    <script type="application/x-javascript" src="scripts/three.min.js" />
-    <script type="application/x-javascript" src="scripts/base.js" />
-    <script type="application/x-javascript" src="scripts/mainmenu.js" />
+    <!-- -->
+    <script type="application/x-javascript" src="scripts/Stats.js" />
+    <!-- -->
 
     <stack>
         <html:canvas id="arcanik-mainmenu-3dzone" width="100%" height="100%" />
         <vbox id="arcanik-mainmenu-frame" hidden="false">
-            <hbox><spacer flex="1" /><html:h1>&arcanik.mainmenu.titre;</html:h1><spacer flex="2" /></hbox>
+            <hbox><box id="stats" /><spacer flex="1" /><html:h1>&arcanik.mainmenu.titre;</html:h1><spacer flex="2" /></hbox>
             <hbox>
                 <svg:svg width="200" height="240">
                     <svg:g transform="translate(80,120),scale(0.5)" id="arcanik-mainmenu-staticring">

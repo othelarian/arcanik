@@ -1,5 +1,11 @@
 {
-    "socles":{},
+    "rooms":{"main_room":[0,0,0]},
+    "socles":{
+        "socle_test":{
+            "main_room":[[0,0,0,0,0,0],[1,0,0,0,0,0],[0,0,1,0,0,0]]
+        }
+    },
+    "piliers":{},
     "bords":{},
     "murs":{},
     "lights":{}

@@ -1,25 +1,26 @@
+/*GAME VARIABLES*/
 /*GAME INIT FUNCTION*/
 function initGame () {
     //init de base
-    initBase(); scene3D.init3D("arcanik-game-3dzone");
-    //
-    //window.dump(prefs.getBoolPref("arcanik.fullscreen"));
-    //
+    initBase();
     //modification de l'affichage
     if (prefs.getBoolPref("arcanik.fullscreen")) {
         doc.byTAG("window")[0].setAttribute("hidechrome",true);
         doc.byTAG("window")[0].setAttribute("fullscreen",true); window.fullScreen = true;
     }
-    //
+    //init de la 3D
+    scene3D.init3D("arcanik-game-3dzone");
     //transfert des données
-    db = window.opener.db;
+    db = window.opener.db; var tmp_name = window.opener.tmp_name;
+    //
+    window.dump("name: "+tmp_name+"\n");
     //
     //
     //capture des évènements
-    window.addEventListener("keydown",keycapt,false);
-    window.addEventListener("DOMMouseScroll",wheelcapt,false);
-    //
-    //
+    window.addEventListener("keydown",keycapt,false); window.addEventListener("keyup",keyclear,false);
+    window.addEventListener("mousedown",mousecapt,false); window.addEventListener("mouseup",mouseclear,false);
+    window.addEventListener("DOMMouseScroll",wheelcapt,false); window.addEventListener("mousemove",movecapt,false);
+    if (prefs.getBoolPref("arcanik.fullscreen")) window.addEventListener("resize",resizecapt,false);
     //fermeture du menu principal
     window.opener.close();
     //
@@ -35,7 +36,24 @@ function keycapt (evt) {
     //
     //
 }
-
+/*KEYBOARD CLEAR CAPTURE FUNCTION*/
+function keyclear (evt) {
+    //
+    //
+    //
+}
+/*MOUSE CAPTURE FUNCTION*/
+function mousecapt (evt) {
+    //
+    //
+    //
+}
+/*MOUSE CLEAR CAPTURE FUNCTION*/
+function mouseclear (evt) {
+    //
+    //
+    //
+}
 /*MOUSE WHEEL SCROLL CAPTURE FUNCTION*/
 function wheelcapt (evt) {
     if (!voile.state || doc.byID("arcanik-game-deck").selectedIndex == 0) return;
@@ -45,5 +63,29 @@ function wheelcapt (evt) {
         //
         //
     }
+}
+/*MOUSE MOVEMENT CAPTURE FUNCTION*/
+function movecapt (evt) {
+    //
+    //
+    //
+}
+/*RESIZE CAPTURE FUNCTION*/
+function resizecapt () {
+    //
+    //
+    //
+}
+/*UNIT CLASS*/
+function unitClass () {
+    //
+    //
+    //
+}
+/*ROBOT CLASS*/
+function robotClass () {
+    //
+    //
+    //
 }
 

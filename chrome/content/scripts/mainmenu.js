@@ -5,7 +5,18 @@ var frames_state = 0, freeze = false, mainmenu_state = 0;
 /*INIT MAIN MENU FUNCTION*/
 function initMain () {
     //init de base
+    //
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    stats.domElement.style.zIndex = 100;
+    doc.byID("stats").appendChild( stats.domElement );
+    //
     initBase(); scene3D.init3D("arcanik-mainmenu-3dzone","mainmenu.json");
+    //
+    // TODO : mise à niveau de la position de la camera
+    //
+    scene3D.camera.position.set(0,15,20); scene3D.camera.lookAt(new THREE.Vector3(0,0,0));
     //
     //
     //mise en place du gestionnaire d'options
@@ -512,18 +523,19 @@ function missionClass () {
         //
         //
     }
-    //
     this.init();
 }
 /*PLAY FUNCTION*/
+var tmp_name = "";
 function play (camp) {
     voile.toggle(); voile.show(0); var win = (camp)? "campaign" : "mission";
-    //
-    var args = "chrome";
-    //
-    if (prefs.getBoolPref("arcanik.fullscreen")) args += ",fullscreen,hidechrome";
-    else args += ",centerscreen";
-    //
+    if (camp) { var actid = doc.byID("arcanik-campaign-maindeck").selectedIndex -1; tmp_name = doc.byID("arcanik-campaign-lab"+actid).value; }
+    else {
+        //
+        //
+        //
+    }
+    var args = "chrome"; if (prefs.getBoolPref("arcanik.fullscreen")) args += ",fullscreen,hidechrome"; else args += ",centerscreen";
     window.open("chrome://arcanik/content/"+win+".xul","arcns-game",args);
 }
 

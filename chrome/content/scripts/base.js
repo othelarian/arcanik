@@ -155,36 +155,68 @@ function quit () {
 }
 /*3D OBJECTS*/
 var scene3D = {
-   canvas: null, height:0, width:0, view_ang: 0, renderer: null, nb_lghts: 20, loader: null,
+   canvas: null, height:0, width:0, view_ang: 0, renderer: null, nb_lghts: 20, loader: null, pause: false,
    //
-   centcam: null, camera: null, canmove: false, scene: null, usemap: false,
+   centcam: null, camera: null, canmove: false, scene: null, usemap: false, rooms: {},
+   //
+   tmp_model: null, tmp_type: null,
+   //
    //
    initScene: function (name) { ajaxfun("chrome://arcanik/content/models/scenes/"+name,"",scene3D.loadScene,false,true); },
    loadScene: function (res) {
+       res = JSON.parse(res);
+       for (room in res["rooms"]) {
+           scene3D.rooms[room] = new THREE.Object3D(); scene3D.rooms[room].visible = false;
+           scene3D.rooms[room].position.set(res["rooms"][room][0],res["rooms"][room][1],res["rooms"][room][2]);
+           scene3D.scene.add(scene3D.rooms[room]);
+       }
+       scene3D.tmp_type = 0;
+       for (key in res["socles"]) {
+           scene3D.tmp_model = res["socles"][key]; scene3D.loader.load("chrome://arcanik/content/models/socles/"+key+".json",scene3D.loadModel); }
        //
-       window.dump(res); window.dump("\n");
+       // TODO : chargement des piliers
        //
-       scene3D.loader.load("chrome://arcanik/content/models/socles/socle_test.json",scene3D.testloader);
+       // TODO : chargement des bords
        //
+       // TODO : chargement des lumières
+       //
+       // TODO : chargement des murs
+       //
+       //
+   },
+   loadModel: function (geom,mats) {
+       var mat_model = new THREE.MeshFaceMaterial(mats); var bld_model = null; var first = true;
+       for (room in scene3D.tmp_model) {
+           for (var it = 0; it<scene3D.tmp_model[room].length; it++) {
+               if (first) { bld_model = new THREE.Mesh(geom,mat_model); first = false; } else bld_model = bld_model.clone();
+               //
+               //bld_model.visible = false;
+               //
+               switch (scene3D.tmp_type) {
+                   case 0: //type : socle
+                       var posrot = scene3D.tmp_model[room][it]; bld_model.position.set(posrot[0]*4.8,posrot[1],posrot[2]*4.8);
+                       //
+                       //bld_model.rotation.set();
+                       //
+                       scene3D.rooms[room].add(bld_model);
+                       //
+                       break;
+                   //
+                   //bld_model.visible = false;
+                   //
+                   //scene3D.scene.add(bld_model);
+                   //
+               }
+               //
+               //
+           }
+       }
    },
    cleanScene: function () {
        //
        //
        //
    },
-   //
-   testloader: function (geom,mats) {
-       //
-       var mat_model = new THREE.MeshFaceMaterial(mats);
-       //
-       var bld_model = new THREE.Mesh(geom,mat_model);
-       //
-       scene3D.scene.add(bld_model);
-       //
-       scene3D.renderer.render(scene3D.scene,scene3D.camera);
-       //
-   },
-   //
    //
    init3D: function (zone3D_id,initScene,usemap=false) {
        this.canvas = doc.byID(zone3D_id); this.view_ang = 45;
@@ -194,9 +226,11 @@ var scene3D = {
        window.dump(this.width); window.dump(this.height); window.dump("\n");
        //
        this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true}); this.renderer.setSize(this.width,this.height);
-       this.camera = new THREE.PerspectiveCamera(this.view_ang,aspect,near,far);
-       //
        this.scene = new THREE.Scene();
+       //
+       // TODO : placer la camera sur un giroscope
+       //
+       this.camera = new THREE.PerspectiveCamera(this.view_ang,aspect,near,far);
        //
        this.scene.add(this.camera);
        //
@@ -215,8 +249,6 @@ var scene3D = {
        //pointLight.position.x = 10
        //
        //
-       //this.canvas.append(this.renderer);
-       //
        this.centcam = new THREE.Object3D();
        //
        this.usemap = usemap;
@@ -224,10 +256,16 @@ var scene3D = {
        this.loader = new THREE.JSONLoader();
        //
        //
-       // TODO : init de la 3D
+       scene3D.animloop();
+   },
+   animloop: function () {
+       if (scene3D.pause) return; scene3D.renderer.clear();
+       window.requestAnimationFrame(scene3D.animloop);
        //
-       this.renderer.render(this.scene,this.camera);
+       // TODO : code de mise à jour de la scène 3D
        //
+       scene3D.renderer.render(scene3D.scene,scene3D.camera);
+       try { stats.update(); } catch (e) {}
    }
 }
 
