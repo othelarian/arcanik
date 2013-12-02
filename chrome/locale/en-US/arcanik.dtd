@@ -86,3 +86,5 @@
 <!ENTITY arcanik.mainmenu.maj.successwait "The game will restart now.">
 <!ENTITY arcanik.mainmenu.framereturn "Main menu">
 
+<!ENTITY arcanik.game.menu "Menu">
+

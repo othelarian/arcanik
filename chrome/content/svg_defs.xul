@@ -4,10 +4,10 @@
 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <svg:svg id="arcanik-svghead-defs"><svg:defs>
-    <filter id="filt" width="10" height="10">
-        <feMorphology id="dilat" operator="dilate" result="dilation" in="SourceGraphic" radius="0" />
-        <feGaussianBlur id="gauss" in="dilation" stdDeviation="7" />
-    </filter>
+    <svg:filter id="filt" width="10" height="10">
+        <svg:feMorphology id="dilat" operator="dilate" result="dilation" in="SourceGraphic" radius="0" />
+        <svg:feGaussianBlur id="gauss" in="dilation" stdDeviation="7" />
+    </svg:filter>
 </svg:defs></svg:svg>
 
 </overlay>

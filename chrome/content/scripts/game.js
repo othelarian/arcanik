@@ -8,12 +8,15 @@ function initGame () {
         doc.byTAG("window")[0].setAttribute("hidechrome",true);
         doc.byTAG("window")[0].setAttribute("fullscreen",true); window.fullScreen = true;
     }
-    //init de la 3D
-    scene3D.init3D("arcanik-game-3dzone");
     //transfert des données
     db = window.opener.db; var tmp_name = window.opener.tmp_name;
     //
     window.dump("name: "+tmp_name+"\n");
+    //
+    //init de la 3D
+    //
+    //scene3D.init3D("arcanik-game-3dzone");
+    scene3D.init3D("arcanik-game-3dzone","opal_base");
     //
     //
     //capture des évènements
@@ -28,6 +31,13 @@ function initGame () {
     //
     //
     doc.byID("arcanik-game-deck").selectedIndex = 1;
+    //
+}
+/*READY TO GO FUNCTION*/
+function readyToGo () {
+    //
+    // TODO : show the starting room
+    //
     //
 }
 /*KEYBOARD CAPTURE FUNCTION*/

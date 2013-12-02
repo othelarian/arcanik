@@ -1,9 +1,9 @@
 /*INIT VARIABLES*/
-var sounds = [0,0,0], optionsSystem = null, majSystem = null;
-var campaign = null;
-var frames_state = 0, freeze = false, mainmenu_state = 0;
+var sounds = [0,0,0], optionsSystem = null, majSystem = null, campaign = null;
+var frames_state = 0, freeze = false, mainmenu_state = 0, initiated = false;
 /*INIT MAIN MENU FUNCTION*/
 function initMain () {
+    if (initiated) return; else initiated = true;
     //init de base
     //
     stats = new Stats();
@@ -12,7 +12,7 @@ function initMain () {
     stats.domElement.style.zIndex = 100;
     doc.byID("stats").appendChild( stats.domElement );
     //
-    initBase(); scene3D.init3D("arcanik-mainmenu-3dzone","mainmenu.json");
+    initBase(); scene3D.init3D("arcanik-mainmenu-3dzone","mainmenu");
     //
     // TODO : mise à niveau de la position de la camera
     //
@@ -45,17 +45,22 @@ function initMain () {
     majSystem = new majClass();
     //lancement de la musique, si active
     if (prefs.getBoolPref("arcanik.music.active")) doc.byID("arcanik-main-music").play();
-    //fermeture du launcher
-    window.opener.close();
     //
+    // TODO : chargement des portes
+    //
+}
+/*READY TO GO FUNCTION*/
+function readyToGo () {
+    //
+    scene3D.showRoom("main_room");
     //
     // TODO : lancement du mouvement de caméra et d'affichage de la mainframe
     //
     //
     //window.setTimeout("doc.byID('arcanik-mainmenu-frame').hidden = false;",3000);
     //
-    //scene3D.animRender();
-    //
+    //fermeture du launcher
+    window.opener.close();
 }
 /*KEYBOARD CAPTURE FUNCTION*/
 function keycapt (evt) {

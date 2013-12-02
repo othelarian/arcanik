@@ -54,7 +54,7 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                         </svg:g>
                     </svg:g>
                 </svg:svg>
-                <deck id="arcanik-mainmenu-deck">
+                <stack><box id="arcanik-mainmenu-bck" /><deck id="arcanik-mainmenu-deck">
                     <box>
                         <vbox>
                             <spacer id="arcanik-mainmenu-btnspacer" height="108" />
@@ -230,7 +230,7 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                             <button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" />
                         </hbox>
                     </vbox>
-                </deck>
+                </deck></stack>
             </hbox>
             <hbox><spacer flex="1" /><label value="v0.0" /></hbox>
         </vbox>

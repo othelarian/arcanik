@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
+<!DOCTYPE overlay SYSTEM "chrome://arcanik/locale/" >
+
 <overlay id="arcanik-game" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -57,7 +59,9 @@ xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg"
                         <!-- -->
                         <hbox>
                             <!-- -->
-                            <button label="test 1" />
+                            <button label="test - quit" command="arcanik-cmd-quit" />
+                            <!-- -->
+                            <button label="&arcanik.game.menu;" oncommand="alert('test');" />
                             <!-- -->
                             <button label="test 2" />
                             <!-- -->

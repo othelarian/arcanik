@@ -132,8 +132,8 @@ function rune_bluring () {
     var nod = doc.byID("filt");
     nod.setAttribute("width",10+rune_blurval*4); nod.setAttribute("height",10+rune_blurval*4);
     doc.byID("radius",rune_blurval*3); doc.byID("gauss").setAttribute("stdDeviation",rune_blurval);
-    if (invert) { if (rune_blurval == 1) rune_invert = false; rune_blurval--; }
-    else { if (rune_blurval == 9) irune_nvert = true; rune_blurval++; }
+    if (rune_invert) { if (rune_blurval == 1) rune_invert = false; rune_blurval--; }
+    else { if (rune_blurval == 9) rune_invert = true; rune_blurval++; }
     window.setTimeout(rune_bluring,120);
 }
 /*BASE INIT*/
@@ -159,60 +159,138 @@ var scene3D = {
    //
    centcam: null, camera: null, canmove: false, scene: null, usemap: false, rooms: {},
    //
-   tmp_model: null, tmp_type: null,
+   tmp_type: "", tmp_model: null,
    //
-   //
-   initScene: function (name) { ajaxfun("chrome://arcanik/content/models/scenes/"+name,"",scene3D.loadScene,false,true); },
+   initScene: function (name) { ajaxfun("chrome://arcanik/content/models/scenes/"+name+".json","",scene3D.loadScene,false,true); },
    loadScene: function (res) {
+       //
+       window.dump(res+"\n");
+       //
        res = JSON.parse(res);
        for (room in res["rooms"]) {
-           scene3D.rooms[room] = new THREE.Object3D(); scene3D.rooms[room].visible = false;
-           scene3D.rooms[room].position.set(res["rooms"][room][0],res["rooms"][room][1],res["rooms"][room][2]);
-           scene3D.scene.add(scene3D.rooms[room]);
-       }
-       scene3D.tmp_type = 0;
-       for (key in res["socles"]) {
-           scene3D.tmp_model = res["socles"][key]; scene3D.loader.load("chrome://arcanik/content/models/socles/"+key+".json",scene3D.loadModel); }
-       //
-       // TODO : chargement des piliers
-       //
-       // TODO : chargement des bords
-       //
-       // TODO : chargement des lumières
-       //
-       // TODO : chargement des murs
-       //
-       //
-   },
-   loadModel: function (geom,mats) {
-       var mat_model = new THREE.MeshFaceMaterial(mats); var bld_model = null; var first = true;
-       for (room in scene3D.tmp_model) {
-           for (var it = 0; it<scene3D.tmp_model[room].length; it++) {
-               if (first) { bld_model = new THREE.Mesh(geom,mat_model); first = false; } else bld_model = bld_model.clone();
+           scene3D.rooms[room] = {};
+           scene3D.rooms[room]["center"] = new THREE.Object3D(); scene3D.rooms[room]["center"].visible = false;
+           scene3D.rooms[room]["center"].position.set(res["rooms"][room][0],res["rooms"][room][1],res["rooms"][room][2]);
+           scene3D.scene.add(scene3D.rooms[room]["center"]);
+           //
+           scene3D.rooms[room]["sol"] = []; //socles, piliers et bords
+           //
+           scene3D.rooms[room]["lights"] = []; //toutes les lumières
+           //
+           if (scene3D.usemap) {
                //
-               //bld_model.visible = false;
-               //
-               switch (scene3D.tmp_type) {
-                   case 0: //type : socle
-                       var posrot = scene3D.tmp_model[room][it]; bld_model.position.set(posrot[0]*4.8,posrot[1],posrot[2]*4.8);
-                       //
-                       //bld_model.rotation.set();
-                       //
-                       scene3D.rooms[room].add(bld_model);
-                       //
-                       break;
-                   //
-                   //bld_model.visible = false;
-                   //
-                   //scene3D.scene.add(bld_model);
-                   //
-               }
                //
                //
            }
        }
+       //chargement des socles
+       scene3D.tmp_type = 0;
+       for (key in res["socles"]) {
+           scene3D.tmp_model = res["socles"][key]; ajaxfun("chrome://arcanik/content/models/socles/"+key+".json","",scene3D.loadModel,false,false); }
+       //chargement des piliers
+       scene3D.tmp_type = 1;
+       for (room in res["piliers"]) {
+           //
+           //
+       }
+       //chargement des bords
+       scene3D.tmp_type = 2;
+       for (room in res["bords"]) {
+           //
+           //
+       }
+       //hargement des murs
+       scene3D.tmp_type = 3;
+       for (room in res["murs"]) {
+           //
+           //
+       }
+       //chargement des lumières
+       for (room in res["lights"]["points"]) {
+           //
+           //
+       }
+       for (room in res["lights"]["spots"]) {
+           var lst_lghts = res["lights"]["spots"][room];
+           for (var it=0;it<lst_lghts.length;it++) {
+               var spot = new THREE.SpotLight(new THREE.Color(lst_lghts[it][0]).getHex()); spot.castShadow = true;
+               spot.position.set(lst_lghts[it][1],lst_lghts[it][2],lst_lghts[it][3]);
+               spot.lookAt(new THREE.Vector3(lst_lghts[it][4],lst_lghts[it][5],lst_lghts[it][6]));
+               scene3D.rooms[room]["lights"].push(spot); spot.visible = false; scene3D.scene.add(spot);
+           }
+       }
+       for (room in res["lights"]["hemis"]) {
+           //
+           //
+       }
+       for (room in res["lights"]["directs"]) {
+           var lst_lghts = res["lights"]["directs"][room];
+           for (var it=0;it<lst_lghts.length;it++) {
+               var direct = new THREE.DirectionalLight(new THREE.Color(lst_lghts[it][0]).getHex(),lst_lghts[it][1]);
+               direct.lookAt(new THREE.Vector3(lst_lghts[2],lst_lghts[3],lst_lghts[4]));
+               scene3D.rooms[room]["lights"].push(direct); direct.visible = false; scene3D.scene.add(direct);
+           }
+       }
+       for (room in res["lights"]["areas"]) {
+           //
+           //
+       }
+       //
+       // TODO : chargement des navmeshs
+       //
+       if (res.hasOwnProperty("navmeshs")) {
+           //
+           //
+           //
+       }
+       //
+       readyToGo();
+   },
+   loadModel: function (res) {
+       var data = scene3D.loader.parse(JSON.parse(res)); var bld_model = null; var first = true;
+       var mat_model = new THREE.MeshFaceMaterial(data.materials);
+       for (room in scene3D.tmp_model) {
+           for (var it = 0; it<scene3D.tmp_model[room].length; it++) {
+               if (first) { bld_model = new THREE.Mesh(data.geometry,mat_model); first = false; } else bld_model = bld_model.clone();
+               bld_model.visible = false;
+               switch (scene3D.tmp_type) {
+                   case 0: //type : socle
+                       var posrot = scene3D.tmp_model[room][it]; bld_model.position.set(posrot[0]*4.8,posrot[1],posrot[2]*4.8);
+                       bld_model.rotation.set(THREE.Math.degToRad(posrot[3]),THREE.Math.degToRad(posrot[4]),THREE.Math.degToRad(posrot[5]));
+                       scene3D.rooms[room]["center"].add(bld_model); scene3D.rooms[room]["sol"].push(bld_model); break;
+                   case 1: //type : piliers
+                       //
+                       //
+                       //
+                       break;
+                   case 2: //type : bords
+                       //
+                       //
+                       //
+                       break;
+                   case 3: //type : murs
+                       //
+                       //
+                       //
+                       break;
+                   //
+                   //
+               }
+           }
+       }
    },
    cleanScene: function () {
+       //
+       //
+       //
+   },
+   showRoom: function (room) {
+       for (var it=0; it<scene3D.rooms[room]["sol"].length;it++) scene3D.rooms[room]["sol"][it].visible = true;
+       for (var it=0; it<scene3D.rooms[room]["lights"].length;it++) scene3D.rooms[room]["lights"][it].visible = true;
+       //
+       //
+   },
+   hideRoom: function (room) {
        //
        //
        //
@@ -225,7 +303,8 @@ var scene3D = {
        //
        window.dump(this.width); window.dump(this.height); window.dump("\n");
        //
-       this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true}); this.renderer.setSize(this.width,this.height);
+       this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true,maxLights:100});
+       this.renderer.setSize(this.width,this.height);
        this.scene = new THREE.Scene();
        //
        // TODO : placer la camera sur un giroscope
@@ -236,27 +315,11 @@ var scene3D = {
        //
        this.camera.position.set(0,0,50);
        //
-       //
-       var env_light = new THREE.AmbientLight(0x404040); this.scene.add(env_light);
-       //
-       //
-       // TEST
-       var light = new THREE.PointLight(0xffffff,1,100);
-       light.position.set(0,0,10);
-       this.scene.add(light);
-       // TEST
-       //var pointLight = new THREE.PointLight
-       //pointLight.position.x = 10
-       //
-       //
        this.centcam = new THREE.Object3D();
        //
-       this.usemap = usemap;
        //
-       this.loader = new THREE.JSONLoader();
-       //
-       //
-       scene3D.animloop();
+       var env_light = new THREE.AmbientLight(0x404040); this.scene.add(env_light);
+       this.usemap = usemap; this.loader = new THREE.JSONLoader(); scene3D.animloop();
    },
    animloop: function () {
        if (scene3D.pause) return; scene3D.renderer.clear();
