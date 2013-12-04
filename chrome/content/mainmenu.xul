@@ -8,7 +8,7 @@
 
 <?xul-overlay href="chrome://arcanik/content/svg_defs.xul" ?>
 
-<window id="arcanik-mainmenu" title="Arcanik - &arcanik.mainmenu.title;" onload="initMain();"
+<window id="arcanik-mainmenu" title="Arcanik - &arcanik.mainmenu.title;" onload="initMain();" hidechrome="true"
 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml">
 

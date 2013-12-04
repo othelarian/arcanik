@@ -156,16 +156,12 @@ function quit () {
 /*3D OBJECTS*/
 var scene3D = {
    canvas: null, height:0, width:0, view_ang: 0, renderer: null, nb_lghts: 20, loader: null, pause: false,
-   //
    centcam: null, camera: null, canmove: false, scene: null, usemap: false, rooms: {},
    //
    tmp_type: "", tmp_model: null,
    //
    initScene: function (name) { ajaxfun("chrome://arcanik/content/models/scenes/"+name+".json","",scene3D.loadScene,false,true); },
    loadScene: function (res) {
-       //
-       window.dump(res+"\n");
-       //
        res = JSON.parse(res);
        for (room in res["rooms"]) {
            scene3D.rooms[room] = {};
@@ -179,6 +175,7 @@ var scene3D = {
            //
            if (scene3D.usemap) {
                //
+               window.dump("usemap\n");
                //
                //
            }
@@ -304,29 +301,16 @@ var scene3D = {
        window.dump(this.width); window.dump(this.height); window.dump("\n");
        //
        this.renderer = new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:true,maxLights:100});
-       this.renderer.setSize(this.width,this.height);
-       this.scene = new THREE.Scene();
-       //
-       // TODO : placer la camera sur un giroscope
-       //
+       this.renderer.setSize(this.width,this.height); this.scene = new THREE.Scene();
        this.camera = new THREE.PerspectiveCamera(this.view_ang,aspect,near,far);
-       //
-       this.scene.add(this.camera);
-       //
-       this.camera.position.set(0,0,50);
-       //
-       this.centcam = new THREE.Object3D();
-       //
-       //
+       this.centcam = new THREE.Object3D(); this.centcam.position.set(0,0,0);
+       this.centcam.add(this.camera); this.scene.add(this.centcam);
        var env_light = new THREE.AmbientLight(0x404040); this.scene.add(env_light);
        this.usemap = usemap; this.loader = new THREE.JSONLoader(); scene3D.animloop();
    },
    animloop: function () {
        if (scene3D.pause) return; scene3D.renderer.clear();
        window.requestAnimationFrame(scene3D.animloop);
-       //
-       // TODO : code de mise à jour de la scène 3D
-       //
        scene3D.renderer.render(scene3D.scene,scene3D.camera);
        try { stats.update(); } catch (e) {}
    }

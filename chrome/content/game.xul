@@ -33,35 +33,32 @@ xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg"
         <html:audio id="arcanik-main-son-aux-1"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
         <html:audio id="arcanik-main-son-aux-2"><html:source src="chrome://arcanik/content/sounds/main_menu_aux.wav" /></html:audio>
         <!-- -->
+        <!-- -->
+        <script type="application/x-javascript" src="scripts/Stats.js" />
+        <!-- -->
     </html:head>
 
     <stack id="arcanik-game-stack">
-        <html:canvas id="arcanik-game-3dzone" width="100%" height="100%" />
+        <html:canvas id="arcanik-game-3dzone" />
+        <!-- -->
+        <box id="stats" />
+        <!-- -->
         <deck id="arcanik-game-deck">
-            <!-- -->
             <box />
-            <!-- -->
             <grid><!-- IN BASE INTERFACE -->
-                <columns>
-                    <!-- -->
-                    <column />
-                    <!-- -->
-                    <column />
-                    <!-- -->
-                    <column />
-                    <!-- -->
-                </columns>
+                <columns><column /><column /><column /></columns>
                 <rows>
                     <!-- -->
                     <row>
                         <!-- -->
                         <spacer flex="1" />
                         <!-- -->
+                        <!-- -->
                         <hbox>
                             <!-- -->
                             <button label="test - quit" command="arcanik-cmd-quit" />
                             <!-- -->
-                            <button label="&arcanik.game.menu;" oncommand="alert('test');" />
+                            <button label="&arcanik.game.menu;" oncommand="voile.toggle();voile.show(1);" />
                             <!-- -->
                             <button label="test 2" />
                             <!-- -->
@@ -84,17 +81,53 @@ xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg"
                 </rows>
             </grid>
             <!-- -->
-            <hbox><!-- IN GAME INTERFACE -->
+            <hbox id="arcanik-game-interface"><!-- IN GAME INTERFACE -->
                 <!-- -->
+                <vbox><hbox>
+                    <!-- -->
+                    <button label="test - quit" command="arcanik-cmd-quit" />
+                    <!-- -->
+                    <button label="&arcanik.game.menu;" oncommand="voile.toggle();voile.show(0);" />
+                    <!-- -->
+                    <!-- -->
+                </hbox></vbox>
+                <!-- -->
+                <spacer flex="1000" />
+                <!-- -->
+                <vbox><svg:svg id="arcanik-game-map" width="150" height="150">
+                    <!-- -->
+                    <!-- -->
+                    <!-- -->
+                </svg:svg></vbox>
+                <!-- -->
+                <spacer flex="1000" />
                 <!-- -->
                 <!-- -->
             </hbox>
             <!-- -->
+            <hbox><vbox><!-- IN CINEMATIC INTERFACE -->
+                <label value="&arcanik.cinematic.pass;" /><spacer flex="100" />
+            </vbox><spacer flex="1" /></hbox>
         </deck>
         <box id="arcanik-voile" hidden="true" />
-        <!-- -->
-        <deck id="arcanik-voile-deck" hidden="true" />
-        <!-- -->
+        <deck id="arcanik-voile-deck" hidden="true">
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><!-- WAITING RING -->
+                <svg:svg width="250" height="250">
+                    <svg:g transform="translate(100,100),scale(0.6)" id="arcanik-voile-waiting">
+                        <svg:animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="360" dur="5s" additive="sum" repeatCount="indefinite" />
+                        <svg:circle r="80" class="arcanik-runecircle" /><svg:circle r="140" class="arcanik-runecircle" />
+                    </svg:g>
+                </svg:svg>
+            <spacer flex="1" /></hbox><spacer flex="1" /></vbox>
+            <vbox><spacer flex="1" /><hbox><spacer flex="1" /><vbox class="arcanik-voile-center"><!-- MENU PRINCIPAL -->
+                <!-- -->
+                <label value="test - menu" />
+                <!-- -->
+                <!-- -->
+            </vbox><spacer flex="1" /></hbox><spacer flex="1" /></vbox>
+            <!-- -->
+            <!-- -->
+        </deck>
     </stack>
 
 </overlay>

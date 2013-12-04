@@ -6,11 +6,8 @@ function initMain () {
     if (initiated) return; else initiated = true;
     //init de base
     //
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    stats.domElement.style.zIndex = 100;
-    doc.byID("stats").appendChild( stats.domElement );
+    stats = new Stats(); stats.domElement.style.position = 'absolute'; stats.domElement.style.top = '0px';
+    stats.domElement.style.zIndex = 100; doc.byID("stats").appendChild( stats.domElement );
     //
     initBase(); scene3D.init3D("arcanik-mainmenu-3dzone","mainmenu");
     //
@@ -51,7 +48,6 @@ function initMain () {
 }
 /*READY TO GO FUNCTION*/
 function readyToGo () {
-    //
     scene3D.showRoom("main_room");
     //
     // TODO : lancement du mouvement de caméra et d'affichage de la mainframe
