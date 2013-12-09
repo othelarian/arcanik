@@ -1,6 +1,6 @@
 /*GAME VARIABLES*/
 var keys = {k17:false,k37:false,k38:false,k39:false,k40:false};
-var mous = {clk1:false,clk2:false,clk3:false,mvh:0,mvv:0,scrl:0};
+var mous = {clk1:false,clk2:false,clk3:false,inith:0,initv:0,mvh:0,mvv:0,scrl:0};
 /*GAME ANIMLOOP OVERRIDE*/
 function override3D () {
     scene3D.animloop = function () {
@@ -9,47 +9,57 @@ function override3D () {
        //
        //window.dump(keys.toSource()+"\n");
        //
-       if (keys.k37 && !keys.k39) {
-           if (keys.k17) scene3D.centcam.rotation.y = scene3D.centcam.rotation.y - 0.05;
-           else {
-               //
-               //
-               scene3D.centcam.position.x = scene3D.centcam.position.x - 0.3;
-               //
-           }
-       }
-       else if (keys.k39 && !keys.k37) {
-           if (keys.k17) scene3D.centcam.rotation.y = scene3D.centcam.rotation.y + 0.05;
-           else {
-               //
-               //
-               scene3D.centcam.position.x = scene3D.centcam.position.x + 0.3;
-               //
-           }
-       }
-       if (keys.k38 && !keys.k40) {
+       var rotate = 0, movmt = [0,0], zoom = 0;
+       if ((keys.k37 && !keys.k39) || (mous.clk2 && mous.mvh < 0)) { if (keys.k17) rotate = - 0.05; else movmt[0] = -1; }
+       else if ((keys.k39 && !keys.k37) || (mous.clk2 && mous.mvh > 0)) { if (keys.k17) rotate = 0.05; else movmt[0] = 1; }
+       if ((keys.k38 && !keys.k40) || (mous.clk2 && mous.mvv < 0)) {
            if (keys.k17) {
                //
                // TODO : zoom in
                //
            }
-           else {
-               //
-               scene3D.centcam.position.z =scene3D.centcam.position.z - 0.3;
-               //
-           }
+           else movmt[1] = -1;
        }
-       else if (keys.k40 && !keys.k38) {
+       else if ((keys.k40 && !keys.k38) || (mous.clk2 && mous.mvv > 0)) {
            if (keys.k17) {
                //
                // TODO : zoom out
                //
            }
-           else {
-               //
-               scene3D.centcam.position.z =scene3D.centcam.position.z + 0.3;
-               //
-           }
+           else movmt[1] = 1;
+       }
+       if (rotate != 0) {
+           scene3D.centcam.rotation.y = scene3D.centcam.rotation.y + rotate;
+           if (scene3D.centcam.rotation.y >= (Math.PI*2)) scene3D.centcam.rotation.y -= (Math.PI*2);
+           else if (scene3D.centcam.rotation.y <= (-1*Math.PI*2)) scene3D.centcam.rotation.y += (Math.PI*2);
+           //
+           // TODO : rotation de la minimap
+           //
+           // TODO : mise à jour des murs (visible ou pas)
+           //
+       }
+       //
+       if (movmt[0] != 0 || movmt[1] != 0) {
+           var mvtx = 0, mvty = 0; var rz = scene3D.centcam.rotation.y; var rz_x = rz - Math.PI/2, rz_y =  rz;
+           if (movmt[0] != 0) { if (movmt[0] > 0) rz_x += Math.PI; mvtx = Math.sin(rz_x) / 5; mvty = Math.cos(rz_x) / 5; }
+           if (movmt[1] != 0) { if (movmt[1] < 0) rz_y -= Math.PI; mvtx += Math.sin(rz_y) / 5; mvty += Math.cos(rz_y) / 5; }
+           //
+           // TODO : vérification des limites de la scène
+           //
+           //
+           //
+           scene3D.centcam.position.x = scene3D.centcam.position.x + mvtx;
+           scene3D.centcam.position.z = scene3D.centcam.position.z + mvty;
+           //
+           //
+           // TODO : déplacement de la minimap
+           //
+       }
+       //
+       if (zoom != 0) {
+           //
+           //
+           //
        }
        //
        //
@@ -195,8 +205,28 @@ function mousecapt (evt) {
         //
     }
     else {
-        //
-        //
+        switch (parseInt(doc.byID("arcanik-game-deck").selectedIndex)) {
+            case 0: break; //transition
+            case 1: //in base
+                //
+                //
+                //
+                break;
+            case 2: //in game
+                switch (evt.button) {
+                    case 0: //left down
+                        //
+                        //
+                        break;
+                    case 1: mous.clk2 = true; mous.inith = evt.clientX; mous.initv = evt.clientY; break; //center down
+                    case 2: //right down
+                        //
+                        //
+                        break;
+                }
+                break;
+            case 3: break; //cinematique
+        }
     }
 }
 /*MOUSE CLEAR CAPTURE FUNCTION*/
@@ -206,8 +236,28 @@ function mouseclear (evt) {
         //
     }
     else {
-        //
-        //
+        switch (parseInt(doc.byID("arcanik-game-deck").selectedIndex)) {
+            case 0: break; //transition
+            case 1: //in base
+                //
+                //
+                //
+                break;
+            case 2: //in game
+                switch (evt.button) {
+                    case 0: //left up
+                        //
+                        //
+                        break;
+                    case 1: mous.clk2 = false; mous.inith = 0; mous.initv = 0; break; //center up
+                    case 2: //right up
+                        //
+                        //
+                        break;
+                }
+                break;
+            case 3: break; //cinematique
+        }
     }
 }
 /*MOUSE WHEEL SCROLL CAPTURE FUNCTION*/
@@ -227,8 +277,23 @@ function movecapt (evt) {
         //
     }
     else {
-        //
-        //
+        switch (parseInt(doc.byID("arcanik-game-deck").selectedIndex)) {
+            case 0: break; //transition
+            case 1: //in base
+                //
+                //
+                //
+                break;
+            case 2: //in game
+                if (mous.clk2) {
+                    if (evt.clientX > (mous.inith + 20)) mous.mvh = 1; else if (evt.clientX < (mous.inith - 20)) mous.mvh = -1; else mous.mvh = 0;
+                    if (evt.clientY > (mous.initv + 20)) mous.mvv = 1; else if (evt.clientY < (mous.initv - 20)) mous.mvv = -1; else mous.mvv = 0;
+                }
+                //
+                //
+                break;
+            case 3: break; //cinematique
+        }
     }
 }
 /*RESIZE CAPTURE FUNCTION*/

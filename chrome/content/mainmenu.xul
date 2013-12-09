@@ -232,7 +232,7 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     </vbox>
                 </deck></stack>
             </hbox>
-            <hbox><spacer flex="1" /><label value="v0.0" /></hbox>
+            <hbox><spacer flex="1" /><label value="v0.1" /></hbox>
         </vbox>
         <box id="arcanik-voile" hidden="true" />
         <deck id="arcanik-voile-deck" hidden="true">

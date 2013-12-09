@@ -33,7 +33,9 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                 <svg:animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="360" dur="4s" additive="sum" repeatCount="indefinite" />
             </svg:g>
         </svg:svg>
-        <hbox><spacer flex="1" /><label value="Arcanik" id="arcanik-launcher-label" /><spacer flex="1" /></hbox>
+        <hbox><spacer flex="1" />
+            <label value="Arcanik" id="arcanik-launcher-label" /><label value="0.1" />
+        <spacer flex="1" /></hbox>
     </vbox>
 
 </window>

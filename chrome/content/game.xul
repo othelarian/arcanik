@@ -94,14 +94,44 @@ xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg"
                 <!-- -->
                 <spacer flex="1000" />
                 <!-- -->
-                <vbox><svg:svg id="arcanik-game-map" width="150" height="150">
-                    <!-- -->
+                <vbox><svg:svg id="arcanik-game-map" width="200" height="200">
+                    <svg:defs><svg:radialGradient id="arcanik-svg-grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <svg:stop offset="80%" style="stop-color:black;stop-opacity:0.3;" /><svg:stop offset="100%" style="stop-color:white;stop-opacity:0;" />
+                    </svg:radialGradient></svg:defs>
+                    <svg:rect x="0" y="0" width="200" height="200" fill="url(#arcanik-svg-grad1)" />
                     <!-- -->
                     <!-- -->
                 </svg:svg></vbox>
                 <!-- -->
                 <spacer flex="1000" />
                 <!-- -->
+                <vbox>
+                    <!-- -->
+                    <box id="arcanik-squad-0"><svg:svg>
+                        <!-- -->
+                        <!-- -->
+                        <!-- -->
+                    </svg:svg></box>
+                    <!-- -->
+                    <box id="arcanik-squad-1"><svg:svg>
+                        <!-- -->
+                        <!-- -->
+                        <!-- -->
+                    </svg:svg></box>
+                    <!-- -->
+                    <box id="arcanik-squad-2"><svg:svg>
+                        <!-- -->
+                        <!-- -->
+                        <!-- -->
+                    </svg:svg></box>
+                    <!-- -->
+                    <box id="arcanik-squad-3"><svg:svg>
+                        <!-- -->
+                        <!-- -->
+                        <!-- -->
+                    </svg:svg></box>
+                    <!-- -->
+                </vbox>
                 <!-- -->
             </hbox>
             <!-- -->
