@@ -1,6 +1,7 @@
 /*GAME VARIABLES*/
 var keys = {k17:false,k37:false,k38:false,k39:false,k40:false};
 var mous = {clk1:false,clk2:false,clk3:false,inith:0,initv:0,mvh:0,mvv:0,scrl:0};
+var unit = null;
 /*GAME ANIMLOOP OVERRIDE*/
 function override3D () {
     scene3D.animloop = function () {
@@ -80,10 +81,6 @@ function initGame () {
         doc.byTAG("window")[0].setAttribute("hidechrome",true);
         doc.byTAG("window")[0].setAttribute("fullscreen",true); window.fullScreen = true;
     }
-    //transfert des données
-    db = window.opener.db; var tmp_name = window.opener.tmp_name;
-    //
-    window.dump("name: "+tmp_name+"\n");
     //
     //init de la 3D
     //
@@ -93,18 +90,35 @@ function initGame () {
     //scene3D.init3D("arcanik-game-3dzone",   ?????   );
     scene3D.init3D("arcanik-game-3dzone","opal_base");
     //
-    scene3D.camera.position.set(0,15,20); scene3D.camera.lookAt(new THREE.Vector3(0,0,0));
+    scene3D.camera.position.set(0,30,40); scene3D.camera.lookAt(new THREE.Vector3(0,0,0));
     //
     //ajout des runes
-    //
     var rune_lst = [56,78,57,127,9,118,18,60,73,57,12,117]; var ring = doc.byID("arcanik-voile-waiting");
     for (var it=0; it<rune_lst.length;it++) addRune(rune_lst[it],105,it*30,ring);
+    //
+    // TODO : ajout des runes manquantes (non déterminé pour l'instant)
     //
     //capture des évènements
     window.addEventListener("keydown",keycapt,false); window.addEventListener("keyup",keyclear,false);
     window.addEventListener("mousedown",mousecapt,false); window.addEventListener("mouseup",mouseclear,false);
     window.addEventListener("DOMMouseScroll",wheelcapt,false); window.addEventListener("mousemove",movecapt,false);
     if (!prefs.getBoolPref("arcanik.fullscreen")) window.addEventListener("resize",resizecapt,false);
+    //transfert des données
+    db = window.opener.db; var tmp_name = window.opener.tmp_name;
+    //
+    window.dump("name: "+tmp_name+"\n");
+    //
+    db.execute("SELECT time,data FROM saves WHERE name='"+tmp_name+"';").then(function onStatementComplete (res) {
+        //
+        window.dump("res(time) : "+res[0].getResultByIndex(0)+"\n");
+        window.dump("res(data) : "+res[0].getResultByIndex(1)+"\n");
+        //
+        var data = res[0].getResultByIndex(1);
+        //
+        unit = new unitClass(tmp_name,res[0].getResultByIndex(0),data);
+        //
+        //
+    });
     //
     // TODO : ouverture des portes
     //
@@ -123,9 +137,6 @@ function readyToGo () {
     //
     //fermeture du menu principal
     window.opener.close();
-}
-/*GLOBAL RESIZE FUNCTION*/
-function global_resize () {
 }
 /*KEYBOARD CAPTURE FUNCTION*/
 function keycapt (evt) {
@@ -301,11 +312,27 @@ function resizecapt () {
     doc.byID("arcanik-game-stack").width = doc.byTAG("window")[0].clientWidth; doc.byID("arcanik-game-stack").height = doc.byTAG("window")[0].clientHeight;
     scene3D.canvas.style.width = doc.byTAG("window")[0].clientWidth; scene3D.canvas.style.height = doc.byTAG("window")[0].clientHeight; scene3D.resize();
 }
+/*CREATE BASIC SAVE DATA FUNCTION*/
+function createBasicSave () {
+    //
+    window.dump("create basic save function");
+    //
+    //
+}
 /*UNIT CLASS*/
-function unitClass () {
+function unitClass (name,timed,data) {
     //
+    this.name = ""; this.timed = 0;
     //
-    //
+    this.init = function (name,timed,data) {
+        //
+        this.name = name;
+        //
+        this.timed = timed;
+        //
+        //
+    }
+    this.init(name,timed,data);
 }
 /*ROBOT CLASS*/
 function robotClass () {

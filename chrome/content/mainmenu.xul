@@ -130,30 +130,62 @@ xmlns:svg="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml"
                     </vbox>
                     <vbox>
                         <html:h2>&arcanik.mainmenu.titres.mission;</html:h2>
-                        <!-- -->
-                        <!-- -->
-                        <label value="test - selection unit :" />
-                        <!-- -->
                         <hbox>
-                            <!-- -->
+                            <label value="&arcanik.mainmenu.mission.selectunit;" class="arcanik-mainmenu-mission-lab" />
+                            <spacer flex="1" />
+                            <menulist id="arcanik-mainmenu-mission-unitslist" style="width:200px;" label="&arcanik.mainmenu.mission.noselect;">
+                            <menupopup id="arcanik-mainmenu-mission-unitspopup" /></menulist>
+                        </hbox>
+                        <spacer height="25px" />
+                        <tabbox>
+                            <tabs>
+                                <tab label="&arcanik.mainmenu.mission.tab1;" />
+                                <tab label="&arcanik.mainmenu.mission.tab2;" />
+                                <tab label="&arcanik.mainmenu.mission.tab3;" />
+                            </tabs>
+                            <tabpanels>
+                                <tabpanel>
+                                    <label value="&arcanik.mainmenu.mission.selectmission;" class="arcanik-mainmenu-mission-lab" /><spacer flex="1" />
+                                    <menulist width="200px"><menupopup>
+                                        <!-- -->
+                                        <menuitem label="w.i.p." />
+                                        <!-- -->
+                                        <menuitem label="w.i.p." />
+                                        <!-- -->
+                                        <menuitem label="w.i.p." />
+                                        <!-- -->
+                                    </menupopup></menulist>
+                                </tabpanel>
+                                <tabpanel>
+                                    <!-- -->
+                                    <label value="W. I. P." />
+                                    <!-- -->
+                                    <!-- -->
+                                </tabpanel>
+                                <tabpanel>
+                                    <!-- -->
+                                    <hbox>
+                                        <!-- -->
+                                        <label value="test - ip" />
+                                        <!-- -->
+                                        <textbox />
+                                        <!-- -->
+                                        <!-- -->
+                                    </hbox>
+                                    <!-- -->
+                                    <label value="W. I. P." />
+                                    <!-- -->
+                                    <!-- -->
+                                </tabpanel>
+                            </tabpanels>
+                        </tabbox>
+                        <hbox>
                             <spacer flex="50" />
                             <!-- -->
-                            <label value="test - a unit" />
-                            <!-- -->
-                            <svg:svg />
+                            <button label="&arcanik.mainmenu.mission.launcher;" oncommand="alert('not implemented yet !');" />
                             <!-- -->
                         </hbox>
-                        <!-- -->
-                        <label value="test - selection mission :" />
-                        <!-- -->
-                        <hbox>
-                            <!-- -->
-                            <button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" />
-                            <!-- -->
-                            <!-- -->
-                        </hbox>
-                        <!-- -->
-                        <!-- -->
+                        <hbox><button label="&arcanik.mainmenu.framereturn;" oncommand="showFrame(0);" /></hbox>
                     </vbox>
                     <vbox>
                         <html:h2>&arcanik.mainmenu.titres.credits;</html:h2>

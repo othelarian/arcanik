@@ -175,7 +175,9 @@ var scene3D = {
            //
            if (scene3D.usemap) {
                //
-               window.dump("usemap\n");
+               //window.dump("usemap\n");
+               //
+               addnode(2,"g",{"id":"room_"},doc.byID("arcanik-game-map"));
                //
                //
            }

@@ -460,6 +460,7 @@ function campaignClass () {
                     doc.byID("arcanik-campaign-creaform").style.display = "block";
                     doc.byID("arcanik-campaign-saveform").style.display = "none";
                 }
+                remnode(doc.byID("arcanik-mainmenu-mission-unitspopup").byTAG("menuitem")[actdeck-1]);
                 if (this.nbsaves == 0) doc.byID("arcanik-campaign-garrowdn").style.display = "none";
                 db.execute("DELETE FROM saves WHERE name='"+name+"';").then(function onStatementComplete (res) {
                     voile.show(5); doc.byID("arcanik-remove-deck").selectedIndex = 1; });
@@ -482,6 +483,7 @@ function campaignClass () {
         var clas = "arcanik-mainmenu-campaign-labs arcanik-mainmenu-campaign-lab"+lvl;
         var dict = {"value":name,"class":clas,"id":"arcanik-campaign-lab"+idx}; if (display) dict["style"] = "display:none;";
         addnode(0,"label",dict,doc.byID("arcanik-campaign-labs"));
+        addnode(0,"menuitem",{"label":name},doc.byID("arcanik-mainmenu-mission-unitspopup"));
     }
     this.play = function () { play(true); }
     this.init = function () {

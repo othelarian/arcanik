@@ -50,7 +50,14 @@
 <!ENTITY arcanik.mainmenu.mission.nounit.lab1 "Vous devez créer au moins une unité">
 <!ENTITY arcanik.mainmenu.mission.nounit.lab2 "dans le mode campagne.">
 <!ENTITY arcanik.mainmenu.mission.nounit.return "Retour">
+<!ENTITY arcanik.mainmenu.mission.selectunit "Sélectionnez une unité :">
+<!ENTITY arcanik.mainmenu.mission.noselect "--- Pas d'unité sélectionnée ---">
+<!ENTITY arcanik.mainmenu.mission.tab1 "Mission solo">
+<!ENTITY arcanik.mainmenu.mission.tab2 "Créer une compagnie">
+<!ENTITY arcanik.mainmenu.mission.tab3 "Rejoindre une compagnie">
+<!ENTITY arcanik.mainmenu.mission.selectmission "Sélectionnez une mission :">
 
+<!ENTITY arcanik.mainmenu.mission.launcher "Jouer">
 
 <!ENTITY arcanik.mainmenu.credits.graph_lab "Graphisme :">
 <!ENTITY arcanik.mainmenu.credits.devs_lab "Programmation :">

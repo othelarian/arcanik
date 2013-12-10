@@ -13,6 +13,12 @@ button {
 button:hover {text-decoration:underline;}
 groupbox {border:solid 2px #bbbbbb;border-radius:10px;}
 groupbox caption {background-color:white;font-size:1.1em;}
+menulist {-moz-appearance:none;background-color:white !important;font-family:"first-order-l",serif;}
+menulist dropmarker {list-style-image:url("chrome://global/skin/arrow/arrow-dn.gif");display:block;}
+menulist menuitem {font-family:"first-order-l",serif;}
+tab {-moz-appearance:none;font-family:"first-order",serif;font-size:1.2em;background-color:white;}
+tab[selected] {border:solid 2px #83FFFF;border-bottom:none;}
+tabpanels, tabpanel {-moz-appearance:none;background-color:white;}
 
 path {fill:#83FFFF;stroke:#83FFFF;stroke-width:2;}
 
